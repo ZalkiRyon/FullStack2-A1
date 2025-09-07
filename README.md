@@ -1,4 +1,4 @@
-# VeggieMart - Tienda de Vegetales
+# Tienda de Vegetales
 
 Sistema web de tienda de vegetales con interfaz de usuario y administración.
 
@@ -28,10 +28,10 @@ Aplicación web para la venta de vegetales frescos, desarrollada con HTML, CSS, 
 │   ├── tienda/
 │   │   └── tienda.html    # Interfaz de usuario/tienda
 │   └── admin/
-│       ├── login.html     # Login administrativo
+│       ├── login.html     
 │       └── dashboard.html # Panel de administración
 ├── data/
-│   └── productos.json     # Datos iniciales
+│   └── productos.json     # 
 └── README.md
 ```
 
@@ -48,17 +48,4 @@ Aplicación web para la venta de vegetales frescos, desarrollada con HTML, CSS, 
 - CRUD completo de productos
 - Gestión de inventario
 - Dashboard administrativo
-
-## Instalación y Uso
-1. Clonar el repositorio
-2. Abrir `index.html` en un navegador web
-3. Para administración: acceder a `/pages/admin/login.html`
-   - Usuario: `admin`
-   - Contraseña: `admin123`
-
-## Colaboradores
-- [Tu nombre] - Módulo de administración
-- [Compañera] - Módulo de tienda/usuarios
-
-## Estado del Proyecto
-🚧 En desarrollo - Estructura básica completada
+  
