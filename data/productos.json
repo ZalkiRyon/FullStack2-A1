@@ -1,0 +1,72 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Tomates Frescos",
+      "categoria": "Verduras",
+      "precio": 2500,
+      "stock": 50,
+      "descripcion": "Tomates frescos de la huerta, perfectos para ensaladas y cocinar",
+      "imagen": "assets/images/tomate.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "Lechuga Criolla",
+      "categoria": "Hojas Verdes",
+      "precio": 1800,
+      "stock": 30,
+      "descripcion": "Lechuga fresca y crujiente, ideal para ensaladas",
+      "imagen": "assets/images/lechuga.jpg"
+    },
+    {
+      "id": 3,
+      "nombre": "Zanahorias",
+      "categoria": "Raíces",
+      "precio": 2200,
+      "stock": 40,
+      "descripcion": "Zanahorias dulces y nutritivas, ricas en vitamina A",
+      "imagen": "assets/images/zanahoria.jpg"
+    },
+    {
+      "id": 4,
+      "nombre": "Brócoli",
+      "categoria": "Verduras",
+      "precio": 3200,
+      "stock": 25,
+      "descripcion": "Brócoli fresco, rico en vitaminas y minerales",
+      "imagen": "assets/images/brocoli.jpg"
+    },
+    {
+      "id": 5,
+      "nombre": "Pimientos Rojos",
+      "categoria": "Verduras",
+      "precio": 4500,
+      "stock": 35,
+      "descripcion": "Pimientos rojos dulces y jugosos",
+      "imagen": "assets/images/pimiento.jpg"
+    }
+  ],
+  "categorias": [
+    "Verduras",
+    "Hojas Verdes",
+    "Raíces",
+    "Frutas",
+    "Hierbas"
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "nombre": "Administrador",
+      "email": "admin@veggiemart.com"
+    }
+  ],
+  "configuracion": {
+    "nombre_tienda": "VeggieMart",
+    "moneda": "CLP",
+    "impuesto": 19,
+    "costo_envio": 2500
+  }
+}

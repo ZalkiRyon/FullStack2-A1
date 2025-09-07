@@ -1,0 +1,59 @@
+/* Estilos personalizados para VeggieMart */
+
+:root {
+    --primary-color: #198754;
+    --secondary-color: #20c997;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+/* Header */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Cards */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Botones */
+.btn-success {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+/* Utilidades */
+.text-success {
+    color: var(--primary-color) !important;
+}
+
+.bg-success {
+    background-color: var(--primary-color) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+}
