@@ -44,7 +44,7 @@ h1 {
 }
 
 main {
-  min-height: 100vh;      
+  min-height: 100vh;
 }
 .seccion-sesion > nav > ul > li > a {
   color: var(--emerald);
@@ -60,12 +60,12 @@ main {
   border: var(--emerald) 1px solid;
   border-radius: 5px;
   align-items: center;
-  justify-content: space-between;    
-  margin: 0px 20px;  
+  justify-content: space-between;
+  margin: 0px 20px;
   padding: 20px 40px;
 }
 
-.izq-seccion-principal{
+.izq-seccion-principal {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -74,13 +74,12 @@ main {
   gap: 80px;
 }
 
-
 .img-principal > img {
   width: 500px;
   height: auto;
 }
 
-footer{
+footer {
   display: flex;
   flex-direction: row;
   padding: 10px 20px;
@@ -88,7 +87,7 @@ footer{
   background-color: var(--light-bg);
   border: var(--emerald) 1px solid;
 }
-.izq-footer>div{
+.izq-footer > div {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -96,7 +95,7 @@ footer{
   gap: 100px;
 }
 
-.der-footer{
+.der-footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -121,18 +120,18 @@ footer{
   border-radius: 5px;
   gap: 20px;
 }
-.cartaProducto >a{
+.cartaProducto > a {
   text-decoration: none;
   color: var(--emerald);
   font-weight: 600;
 }
 
-.imgCartaProducto{
+.imgCartaProducto {
   width: 100%;
   height: 150px;
   object-fit: fill;
 }
-.imgCartaProducto>img {
+.imgCartaProducto > img {
   width: 100%;
   height: 100%;
 }
@@ -142,27 +141,33 @@ footer{
   font-size: 1.2em;
   margin: 0;
 }
-.contenidoCartaProducto{
+.contenidoCartaProducto {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
 
-.seccion-productos{
+.seccion-productos {
   padding: 20px;
 }
 
 /* Estilos pagina registro */
 
-.mainRegistro, .mainInicioSesion{
+.mainRegistro,
+.mainInicioSesion,
+.mainNosotros,
+.mainBlog,
+.mainContacto {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.sectionRegistro, .sectionInicioSesion{
+.sectionRegistro,
+.sectionInicioSesion,
+.sectionContacto {
   background-color: var(--light-bg);
   border: var(--emerald) 1px solid;
   border-radius: 5px;
@@ -171,12 +176,15 @@ footer{
   width: fit-content;
 }
 
-.formRegistro, .formInicioSesion{
+.formRegistro,
+.formInicioSesion {
   display: flex;
   flex-direction: column;
 }
 
-.btnRegistrar, .btnInicioSesion{
+.btnRegistrar,
+.btnInicioSesion,
+.btnContacto {
   background-color: var(--emerald);
   color: white;
   border: none;
@@ -187,28 +195,62 @@ footer{
 }
 
 /* Estilos pagina inicio sesion */
-.sectionEmpresaInicioSesion{
+.sectionEmpresaInicioSesion,
+.sectionEmpresaContacto {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
 
-.divLogoEmpresa{
+.divLogoEmpresa {
   width: 200px;
   height: 200px;
   object-fit: fill;
 }
 
-.imgLogoEmpresa{
+.imgLogoEmpresa {
   width: 100%;
   height: 100%;
 }
 
-.sectionInicioSesion{
+.sectionInicioSesion,
+.sectionContacto {
   width: 40%;
 }
 
-.btnInicioSesion{
+.btnInicioSesion,
+.btnContacto {
   margin-top: 40px;
+}
+
+/* Estilos pagina nostros y blog*/
+.mainNosotros,
+.mainBlog,
+.mainContacto {
+  justify-content: flex-start;
+  padding: 20px 60px;
+  gap: 60px;
+}
+
+.mainNosotros > article,
+.mainBlog > article {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mainBlog > article {
+  background-color: var(--light-bg);
+}
+
+.mainNosotros > article > div {
+  width: 50%;
+  text-align: justify;
+}
+
+.mainBlog > article {
+  width: 95%;
+  padding: 20px 60px;
 }
