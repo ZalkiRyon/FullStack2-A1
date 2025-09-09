@@ -1,59 +1,214 @@
-/* Estilos personalizados para VeggieMart */
-
+/* Variables para Huerto Hogar de los colores requeridos*/
 :root {
-    --primary-color: #198754;
-    --secondary-color: #20c997;
-    --light-bg: #f8f9fa;
-    --dark-text: #212529;
+  --emerald: #2e8b57;
+  --mustard: #ffd700;
+  --light-bg: #f7f7f7;
+  --brown: #8b4513;
+  --primary-text: #333333;
+  --secundary-text: #666666;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
+  font-family: "Montserrat", sans-serif;
+  background-image: url("../images/fondo.jpg");
+  background-color: var(--light-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  background-blend-mode: multiply;
+  color: var(--primary-text);
+  height: 100vh;
 }
 
-/* Header */
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
+h1 {
+  font-family: "Playfair Display", serif;
+  color: var(--brown);
 }
 
-/* Cards */
-.card {
-    transition: transform 0.2s ease-in-out;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--light-bg);
+  border-bottom: 2px solid var(--emerald);
+}
+.header > nav > ul > li > a {
+  color: var(--emerald);
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 500;
+}
+.header > nav > ul > li {
+  border-right: 1px solid var(--emerald);
 }
 
-.card:hover {
-    transform: translateY(-5px);
+main {
+  min-height: 100vh;      
+}
+.seccion-sesion > nav > ul > li > a {
+  color: var(--emerald);
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 20px;
 }
 
-/* Botones */
-.btn-success {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+.seccion-principal {
+  display: flex;
+  flex-flow: row nowrap;
+  background-color: var(--light-bg);
+  border: var(--emerald) 1px solid;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between;    
+  margin: 0px 20px;  
+  padding: 20px 40px;
 }
 
-.btn-success:hover {
-    background-color: #157347;
-    border-color: #146c43;
+.izq-seccion-principal{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  gap: 80px;
 }
 
-/* Utilidades */
-.text-success {
-    color: var(--primary-color) !important;
+
+.img-principal > img {
+  width: 500px;
+  height: auto;
 }
 
-.bg-success {
-    background-color: var(--primary-color) !important;
+footer{
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  height: auto;
+  background-color: var(--light-bg);
+  border: var(--emerald) 1px solid;
+}
+.izq-footer>div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 100px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .display-4 {
-        font-size: 2rem;
-    }
-    
-    .lead {
-        font-size: 1rem;
-    }
+.der-footer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+}
+
+.nav-footer > ul > li > a {
+  color: var(--emerald);
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 500;
+}
+
+.cartaProducto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--light-bg);
+  width: 400px;
+  padding: 10px 20px;
+  border: var(--emerald) 1px solid;
+  border-radius: 5px;
+  gap: 20px;
+}
+.cartaProducto >a{
+  text-decoration: none;
+  color: var(--emerald);
+  font-weight: 600;
+}
+
+.imgCartaProducto{
+  width: 100%;
+  height: 150px;
+  object-fit: fill;
+}
+.imgCartaProducto>img {
+  width: 100%;
+  height: 100%;
+}
+
+.cartaProducto > h3 {
+  color: var(--brown);
+  font-size: 1.2em;
+  margin: 0;
+}
+.contenidoCartaProducto{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.seccion-productos{
+  padding: 20px;
+}
+
+/* Estilos pagina registro */
+
+.mainRegistro, .mainInicioSesion{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionRegistro, .sectionInicioSesion{
+  background-color: var(--light-bg);
+  border: var(--emerald) 1px solid;
+  border-radius: 5px;
+  padding: 20px 60px;
+  margin-top: 20px;
+  width: fit-content;
+}
+
+.formRegistro, .formInicioSesion{
+  display: flex;
+  flex-direction: column;
+}
+
+.btnRegistrar, .btnInicioSesion{
+  background-color: var(--emerald);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: center;
+}
+
+/* Estilos pagina inicio sesion */
+.sectionEmpresaInicioSesion{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.divLogoEmpresa{
+  width: 200px;
+  height: 200px;
+  object-fit: fill;
+}
+
+.imgLogoEmpresa{
+  width: 100%;
+  height: 100%;
+}
+
+.sectionInicioSesion{
+  width: 40%;
+}
+
+.btnInicioSesion{
+  margin-top: 40px;
 }

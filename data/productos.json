@@ -2,11 +2,11 @@
   "productos": [
     {
       "id": 1,
-      "nombre": "Tomates Frescos",
-      "categoria": "Verduras",
-      "precio": 2500,
-      "stock": 50,
-      "descripcion": "Tomates frescos de la huerta, perfectos para ensaladas y cocinar",
+      "nombre": "FR001 - Manzanas Fuji",
+      "categoria": "Frutas frescas",
+      "precio": 1200,
+      "stock": 150,
+      "descripcion": "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule. Perfectas para meriendas saludables o como ingrediente en postres. Estas manzanas son conocidas por su textura firme y su sabor equilibrado entre dulce y ácido. ",
       "imagen": "assets/images/tomate.jpg"
     },
     {
@@ -46,13 +46,7 @@
       "imagen": "assets/images/pimiento.jpg"
     }
   ],
-  "categorias": [
-    "Verduras",
-    "Hojas Verdes",
-    "Raíces",
-    "Frutas",
-    "Hierbas"
-  ],
+  "categorias": ["Verduras", "Hojas Verdes", "Raíces", "Frutas", "Hierbas"],
   "usuarios": [
     {
       "id": 1,
