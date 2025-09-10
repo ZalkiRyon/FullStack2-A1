@@ -130,11 +130,11 @@ footer {
 .imgCartaProducto {
   width: 100%;
   height: 150px;
-  object-fit: fill;
 }
 .imgCartaProducto > img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .cartaProducto > h3 {
@@ -150,6 +150,10 @@ footer {
 }
 
 .seccion-productos {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: space-between;
   padding: 20px;
 }
 
@@ -263,23 +267,25 @@ footer {
   padding: 20px 60px;
 }
 
-.containerImgNosotros , .containerImgBlogMin{
+.containerImgNosotros,
+.containerImgBlogMin {
   height: 400px;
   width: max-content;
   background-color: var(--light-bg);
 }
 
-.imgNosotros , .imgBlogMin{
+.imgNosotros,
+.imgBlogMin {
   height: 100%;
-  width:100% ;
+  width: 100%;
   object-fit: cover;
 }
-.imgBlogMax{
+.imgBlogMax {
   width: 100%;
   height: 100px;
   object-fit: cover;
 }
-.imgAutor{
+.imgAutor {
   width: 50px;
   height: 50px;
   object-fit: cover;
@@ -352,7 +358,6 @@ footer {
 .derCarrito {
   display: flex;
   flex-direction: column;
-
   width: 35%;
   margin-top: 50px;
   gap: 20px;

@@ -61,31 +61,35 @@
         </ul>
       </nav>
 
-      <div class="d-flex">
-        <div>
-          <img
-            src="assets/images/cart-icon.svg"
-            alt="Logo carrito de compras"
-            height="25"
-          />
+       <a href="pages/tienda/carrito.html" class="text-decoration-none text-dark">
+        <div class="d-flex align-items-center">
+            <div>
+                <img
+                    src="assets/images/cart-icon.svg"
+                    alt="Logo carrito de compras"
+                    height="25"
+                />
+            </div>
+            <p class="mb-0 ms-2">Carrito</p>
         </div>
-        <p>Carrito</p>
-      </div>
+    </a>
     </header>
 
     <main>
-      
-        <nav class="navSesion">
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link" href="pages/tienda/inicioSesion.html">Iniciar sesion </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/tienda/registro.html">Registrar usuario</a>
-            </li>
-          </ul>
-        </nav>
-   
+      <nav class="navSesion">
+        <ul class="nav justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tienda/inicioSesion.html"
+              >Iniciar sesion
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tienda/registro.html"
+              >Registrar usuario</a
+            >
+          </li>
+        </ul>
+      </nav>
 
       <section class="seccion-principal">
         <div class="izq-seccion-principal">
@@ -100,7 +104,10 @@
             </p>
           </div>
 
-          <button>
+          <button
+            onclick="window.location.href ='pages/tienda/productos.html'"
+            type="button"
+          >
             <img src="assets/images/download-icon.svg" /> Ver productos
           </button>
         </div>
@@ -114,21 +121,10 @@
       </section>
 
       <section class="seccion-productos">
+        <!-- renderizado de productos -->
+
       
-          <!-- renderizado de productos -->
 
-          <article class="cartaProducto">
-            <div class="imgCartaProducto">
-              <img src="assets/images/img-principal.jpg" alt="Producto" />
-            </div>
-            <a  href="">Product title</a>
-            <div class="contenidoCartaProducto">
-              <p>Atributes</p>
-              <p>$0.00</p>
-            </div>
-          </article>
-
-   
       </section>
     </main>
 
@@ -170,6 +166,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JS personalizado -->
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js" type="module"></script>
   </body>
 </html>

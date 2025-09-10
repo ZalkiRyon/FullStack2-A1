@@ -1,0 +1,10 @@
+export const usuarios = [
+  {
+    id: 1,
+    username: "admin",
+    password: "admin123",
+    role: "admin",
+  },
+];
+
+
