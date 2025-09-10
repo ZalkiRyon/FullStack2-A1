@@ -78,31 +78,195 @@
     </header>
 
     <main class="mainBlog">
-
       <h1>Noticias importantes</h1>
 
       <article>
         <div>
-          <h3>CASO CURIOSO #1</h3>
-          <p>Descripcion corta.</p>
-          <button>Ver caso</button>
+          <h3>La importancia de consumir productos locales y frescos</h3>
+          <p>
+            Descubre por qué elegir frutas y verduras locales no solo beneficia
+            tu salud, sino también a los agricultores y al medio ambiente.
+          </p>
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#article1"
+          >
+            Ver caso
+          </button>
         </div>
-        <div>
-          <img alt="Imagen caso 1"/>
+        <div class="containerImgBlogMin">
+          <img alt="Imagen noticia 1" src="../../assets/images/blog1.jpg" class="imgBlogMin"/>
         </div>
       </article>
 
       <article>
         <div>
-          <h3>CASO CURIOSO #2</h3>
-          <p>Descripcion corta.</p>
-          <button>Ver caso</button>
+          <h3>
+            Cómo armar una despensa saludable con productos de Huerto Hogar
+          </h3>
+          <p>
+            Aprende a organizar tu despensa con productos frescos y orgánicos
+            que te ayudarán a llevar una alimentación balanceada y consciente.
+          </p>
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#article2"
+          >
+            Ver caso
+          </button>
         </div>
-        <div>
-          <img alt="Imagen caso 2"/>
+        <div class="containerImgBlogMin">
+          <img alt="Imagen noticia 2" src="../../assets/images/blog2.jpg" class="imgBlogMin"/>
         </div>
       </article>
 
+      <!-- Modal del primer articulo -->
+      <div
+        class="modal fade"
+        id="article1"
+        tabindex="-1"
+        aria-labelledby="article1Label"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 id="article1Label">
+                La importancia de consumir productos locales y frescos
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <img src="../../assets/images/blog1.jpg" class="img-fluid rounded mb-4 imgBlogMax" alt="Imagen articulo" />
+              <p>
+                En un mundo donde muchas veces priorizamos la rapidez sobre la
+                calidad, olvidamos el verdadero valor de los alimentos frescos y
+                locales. En Huerto Hogar creemos que cada compra es una decisión
+                con impacto: al elegir productos directamente del campo, no solo
+                recibes frutas y verduras llenas de sabor y nutrientes, también
+                apoyas a familias agricultoras de distintas regiones de Chile.
+              </p>
+              <p>
+                Además, consumir productos locales reduce la huella de carbono,
+                ya que los alimentos no necesitan recorrer grandes distancias
+                para llegar a tu mesa. Esto significa menos transporte, menos
+                contaminación y más frescura.
+              </p>
+              <p>
+                Imagina preparar un jugo con naranjas recién cosechadas o un
+                batido verde con espinacas orgánicas cultivadas sin químicos.
+                Esa frescura se siente, se saborea y también contribuye a un
+                estilo de vida más sostenible.
+              </p>
+              <p>
+                En Huerto Hogar te invitamos a ser parte de este cambio: cuidar
+                tu salud, apoyar al campo y construir un futuro más verde con
+                cada compra.
+              </p>
+
+              <div class="tags mt-4">
+                <span class="badge bg-secondary">Sostenibilidad</span>
+                <span class="badge bg-secondary">Huella de carbono</span>
+              </div>
+              <div class="d-flex align-items-center mb-4 mt-4">
+                <img src="../../assets/images/pf.png" class="author-img me-3 imgAutor"  />
+                <div>
+                  <h6 class="mb-0">Paula Frias</h6>
+                  <small class="text-muted"
+                    >Publicado el 02 de Septiembre, 2025</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal del segundo articulo -->
+
+      <div
+        class="modal fade"
+        id="article2"
+        tabindex="-1"
+        aria-labelledby="article2Label"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 id="article1Label">
+                Cómo armar una despensa saludable con productos de Huerto Hogar
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <img src="../../assets/images/blog2.jpg" class="img-fluid rounded mb-4 imgBlogMax" alt="Imagen articulo" />
+              <p>
+                Una despensa bien organizada es el primer paso hacia una vida
+                más saludable. En Huerto Hogar sabemos que la base de una buena
+                alimentación está en los ingredientes, por eso queremos
+                inspirarte a llenar tu cocina con lo mejor del campo.
+              </p>
+              <p>
+                Empieza con frutas frescas como manzanas Fuji y plátanos
+                Cavendish, ideales para snacks rápidos o postres nutritivos.
+                Agrega verduras orgánicas como zanahorias o pimientos
+                tricolores, que aportan color, vitaminas y antioxidantes a tus
+                comidas.
+              </p>
+              <p>
+                No olvides los básicos que no pueden faltar: miel orgánica para
+                endulzar naturalmente tus bebidas, y quinua para preparar
+                ensaladas o acompañar platos principales. Estos productos,
+                además de ser nutritivos, están elaborados bajo prácticas
+                sostenibles que respetan la tierra y a quienes la trabajan.
+              </p>
+              <p>
+                Con pequeñas elecciones diarias puedes transformar tu
+                alimentación y la de tu familia. Y lo mejor: todo lo encuentras
+                en un solo lugar, con la frescura y calidad que Huerto Hogar
+                garantiza.
+              </p>
+
+              <div class="tags mt-4">
+                <span class="badge bg-secondary">Despensa saludable</span>
+                <span class="badge bg-secondary">Organizacion cocina</span>
+              </div>
+              <div class="d-flex align-items-center mb-4 mt-4">
+                <img src="../../assets/images/sv.png" class="author-img me-3 imgAutor" />
+                <div>
+                  <h6 class="mb-0">Sebastian Valdivia</h6>
+                  <small class="text-muted"
+                    >Publicado el 09 de Septiembre, 2025</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Huerto Hogar</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+
+    <!-- Fuente de Google Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Fuente de Google Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="d-flex align-items-center">
+        <div>
+          <img
+            src="../../assets/images/icono.png"
+            alt="Logo de Huerto Hogar"
+            width="150"
+          />
+        </div>
+        <h1>Huerto Hogar</h1>
+      </div>
+      <nav>
+        <ul class="nav justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link" href="../../index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="productos.html">Productos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="nosotros.html">Nosotros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="blog.html">Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contacto.html">Contacto</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="d-flex">
+        <div>
+          <img
+            src="../../assets/images/cart-icon.svg"
+            alt="Logo carrito de compras"
+            height="25"
+          />
+        </div>
+        <p>Carrito</p>
+      </div>
+    </header>
+
+    <main class="d-flex mainCarrito">
+      <section class="izqCarrito">
+        <h1>Mi carrito de compras</h1>
+        <div id="cart-list">
+          <!-- Los productos se cargarán aquí con JavaScript -->
+
+          <article class="productoCarrito">
+            <div class="containerImgProductoCarrito">
+              <img
+                src="../../assets/images/logoEmpresa.jpg"
+                alt="Producto"
+                class="imgProductoCarrito"
+              />
+            </div>
+            <div>
+              <h4>{Nombre producto}</h4>
+              <p>{Descripcion producto}</p>
+            </div>
+            <div class="d-flex flex-column">
+              <h4>$ {Precio}</h4>
+              <div>
+                <button>-</button>
+                <input
+                  type="number"
+                  id="cantidad"
+                  name="cantidad"
+                  min="1"
+                  max="100"
+                  value="1"
+                  class="w-25"
+                />
+                <button>+</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="derCarrito">
+        <article class="d-flex justify-content-between align-items-center">
+          <h2>Total:</h2>
+          <h2>$ {Precio}</h2>
+        </article>
+        <div class="d-flex flex-column">
+          <label for="">Ingrese cupon de descuento</label>
+          <div >
+            <input type="text"  />
+            <button>APLICAR</button>
+          </div>
+        </div>
+        <button>PAGAR</button>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

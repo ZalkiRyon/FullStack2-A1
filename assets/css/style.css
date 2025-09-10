@@ -13,7 +13,7 @@ body {
   background-image: url("../images/fondo.jpg");
   background-color: var(--light-bg);
   background-repeat: no-repeat;
-  background-position: center;
+
   background-size: auto;
   background-blend-mode: multiply;
   color: var(--primary-text);
@@ -234,7 +234,8 @@ footer {
 .mainBlog,
 .mainContacto,
 .mainProductos,
-.mainDetalleProducto {
+.mainDetalleProducto,
+.mainCarrito {
   justify-content: flex-start;
   padding: 20px 60px;
   gap: 60px;
@@ -243,9 +244,9 @@ footer {
 .mainNosotros > article,
 .mainBlog > article {
   display: flex;
-  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .mainBlog > article {
@@ -253,13 +254,36 @@ footer {
 }
 
 .mainNosotros > article > div {
-  width: 50%;
+  width: 45%;
   text-align: justify;
 }
 
 .mainBlog > article {
   width: 95%;
   padding: 20px 60px;
+}
+
+.containerImgNosotros , .containerImgBlogMin{
+  height: 400px;
+  width: max-content;
+  background-color: var(--light-bg);
+}
+
+.imgNosotros , .imgBlogMin{
+  height: 100%;
+  width:100% ;
+  object-fit: cover;
+}
+.imgBlogMax{
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+.imgAutor{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* Estilos Productos */
@@ -278,12 +302,14 @@ footer {
   height: 150px;
 }
 
-.containerImgProductoDetalle {
+.containerImgProductoDetalle,
+.containerImgProductoCarrito {
   width: 50%;
   height: 600px;
   background-color: var(--light-bg);
 }
-.imgDetalleProducto {
+.imgDetalleProducto,
+.imgProductoCarrito {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -297,6 +323,37 @@ footer {
   width: 40%;
   height: 500px;
 }
-.btnAddProductoDetalle{
+.btnAddProductoDetalle {
   align-self: auto;
+}
+
+/* Estilos carrito de compras */
+
+.productoCarrito {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--light-bg);
+  border-radius: 5px;
+  padding: 20px 10px;
+  gap: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.containerImgProductoCarrito {
+  width: 30%;
+  height: 150px;
+  /* background-color: var(--light-bg); */
+  background-color: red;
+}
+.izqCarrito {
+  width: 65%;
+}
+.derCarrito {
+  display: flex;
+  flex-direction: column;
+
+  width: 35%;
+  margin-top: 50px;
+  gap: 20px;
 }
