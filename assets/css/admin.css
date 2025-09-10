@@ -1,0 +1,460 @@
+/* Estilos específicos para el área de administración */
+
+/* Variables base de Huerto Hogar (copiadas de style.css) */
+:root {
+  --emerald: #2e8b57;
+  --mustard: #ffd700;
+  --light-bg: #f7f7f7;
+  --brown: #8b4513;
+  --primary-text: #333333;
+  --secundary-text: #666666;
+}
+
+/* Variables adicionales para admin */
+:root {
+  --admin-sidebar-bg: var(--light-bg);
+  --admin-sidebar-border: var(--emerald);
+  --admin-nav-hover: #e9ecef;
+  --admin-nav-active: var(--emerald);
+  --admin-nav-active-bg: rgba(46, 139, 87, 0.1);
+  --admin-main-bg: #ffffff;
+  --admin-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset para el body del admin */
+.admin-body {
+  font-family: "Montserrat", sans-serif;
+  background-image: url("../images/fondo.jpg");
+  background-color: var(--light-bg);
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-blend-mode: multiply;
+  color: var(--primary-text);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Container principal del admin */
+.admin-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 250px;
+  background-color: var(--admin-sidebar-bg);
+  border-right: 1px solid var(--admin-sidebar-border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  box-shadow: var(--admin-shadow);
+}
+
+/* Logo del admin */
+.admin-logo {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--admin-sidebar-border);
+  gap: 10px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-text);
+}
+
+/* Navegación del sidebar */
+.admin-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-bottom: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--primary-text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-right: 3px solid transparent;
+}
+
+.nav-link:hover {
+  background-color: var(--admin-nav-hover);
+  color: var(--primary-text);
+}
+
+.nav-item.active .nav-link {
+  background-color: var(--admin-nav-active-bg);
+  color: var(--admin-nav-active);
+  border-right-color: var(--admin-nav-active);
+}
+
+.nav-icon {
+  margin-right: 12px;
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Footer del sidebar */
+.admin-sidebar-footer {
+  border-top: 1px solid var(--admin-sidebar-border);
+  padding: 20px 0;
+}
+
+.admin-sidebar-footer .nav-item {
+  margin-bottom: 4px;
+}
+
+.admin-sidebar-footer .nav-link {
+  font-size: 14px;
+  padding: 8px 20px;
+}
+
+/* Perfil de usuario */
+.user-profile {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  margin-top: 10px;
+  border-top: 1px solid var(--admin-sidebar-border);
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: var(--admin-nav-hover);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-icon {
+  font-size: 16px;
+}
+
+.user-name {
+  font-size: 14px;
+  color: var(--primary-text);
+  font-weight: 500;
+}
+
+/* Contenido principal */
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--admin-main-bg);
+  overflow-y: auto;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Título de bienvenida - usando el mismo estilo que h1 en style.css */
+.welcome-title {
+  font-family: "Playfair Display", serif;
+  color: var(--brown);
+  font-size: 3rem;
+  text-align: center;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 200px;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .admin-content {
+    padding: 20px;
+  }
+}
+
+/* Estilos específicos para la página de órdenes */
+.admin-content-ordenes {
+  flex: 1;
+  padding: 20px 40px;
+  background-color: var(--admin-main-bg);
+  overflow-y: auto;
+}
+
+.orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--admin-sidebar-border);
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: var(--brown);
+  margin: 0;
+  font-weight: 600;
+}
+
+.btn-nuevo-usuario {
+  background-color: var(--primary-text);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-nuevo-usuario:hover {
+  background-color: var(--brown);
+}
+
+.notification-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.orders-filters {
+  margin-bottom: 20px;
+}
+
+.filter-dropdown {
+  width: 200px;
+}
+
+.form-select {
+  border: 1px solid var(--admin-sidebar-border);
+  border-radius: 5px;
+  padding: 8px 12px;
+  background-color: white;
+  color: var(--primary-text);
+}
+
+/* Tabla de órdenes */
+.orders-table-container {
+  background-color: white;
+  border: 1px solid var(--admin-sidebar-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: var(--admin-shadow);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.orders-table thead {
+  background-color: var(--light-bg);
+}
+
+.orders-table th {
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--primary-text);
+  border-bottom: 1px solid var(--admin-sidebar-border);
+}
+
+.orders-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: var(--primary-text);
+}
+
+.orders-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.orders-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Estados de las órdenes */
+.estado-enviado {
+  color: var(--emerald);
+  font-weight: 600;
+}
+
+.estado-pendiente {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.estado-procesando {
+  color: #17a2b8;
+  font-weight: 600;
+}
+
+.estado-cancelado {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Paginación */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.pagination-btn {
+  padding: 8px 12px;
+  border: 1px solid var(--admin-sidebar-border);
+  background-color: white;
+  color: var(--primary-text);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.pagination-btn:hover {
+  background-color: var(--light-bg);
+}
+
+.pagination-btn.active,
+.pagination-btn.current {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive para órdenes */
+@media (max-width: 768px) {
+  .admin-content-ordenes {
+    padding: 15px 20px;
+  }
+  
+  .orders-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .orders-table-container {
+    overflow-x: auto;
+  }
+  
+  .orders-table {
+    min-width: 600px;
+  }
+  
+  .pagination-controls {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  
+  .pagination-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 35px;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-container {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .admin-nav {
+    padding: 10px 0;
+  }
+  
+  .nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0 10px;
+  }
+  
+  .nav-item {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 12px;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .nav-icon {
+    margin-right: 5px;
+    font-size: 14px;
+  }
+  
+  .admin-sidebar-footer {
+    display: none;
+  }
+  
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,385 @@
+// JavaScript para la página de órdenes del administrador
+
+// Variables globales
+let ordenes = []; // Se cargará desde clientes.js
+let currentPage = 1;
+const itemsPerPage = 20;
+let filteredOrders = [];
+
+// Función para cargar datos desde clientes.js
+async function cargarDatosOrdenes() {
+    try {
+        console.log('Intentando cargar datos de órdenes...');
+        
+        // Importar dinámicamente el módulo
+        const modulo = await import('./modules/clientes.js');
+        console.log('Módulo clientes.js cargado:', modulo);
+        
+        if (modulo.ordenes && Array.isArray(modulo.ordenes)) {
+            ordenes = modulo.ordenes;
+            filteredOrders = [...ordenes];
+            console.log('Datos de órdenes cargados exitosamente:', ordenes.length, 'registros');
+            console.log('Primera orden:', ordenes[0]);
+            return true;
+        } else {
+            console.error('El módulo no contiene un array de órdenes válido');
+            ordenes = [];
+            filteredOrders = [];
+            return false;
+        }
+    } catch (error) {
+        console.error('Error cargando datos de órdenes:', error);
+        console.error('Stack trace:', error.stack);
+        
+        // Fallback: usar datos vacíos
+        ordenes = [];
+        filteredOrders = [];
+        return false;
+    }
+}
+
+// Inicializar la página cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('=== Página de órdenes cargada ===');
+    
+    // Verificar autenticación
+    if (!checkAuthStatus()) return;
+    
+    try {
+        // Cargar datos de órdenes
+        console.log('Iniciando carga de datos...');
+        const datosCargados = await cargarDatosOrdenes();
+        console.log('Resultado de carga de datos:', datosCargados);
+        console.log('Estado actual - ordenes:', ordenes.length, 'filteredOrders:', filteredOrders.length);
+        
+        if (!datosCargados || ordenes.length === 0) {
+            console.error('No se pudieron cargar los datos');
+            const tbody = document.getElementById('orders-tbody');
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error: No se pudieron cargar los datos de órdenes</td></tr>';
+            }
+            return;
+        }
+        
+        // Inicializar componentes paso a paso
+        console.log('Configurando sidebar...');
+        setupSidebarNavigation();
+        
+        console.log('Configurando perfil de usuario...');
+        setupUserProfile();
+        
+        console.log('Configurando filtros...');
+        setupFilters();
+        
+        console.log('Renderizando tabla inicial...');
+        renderOrdersTable();
+        
+        console.log('Configurando paginación...');
+        setupPagination();
+        
+        console.log('=== Inicialización completa exitosa ===');
+        
+    } catch (error) {
+        console.error('Error en la inicialización:', error);
+        const tbody = document.getElementById('orders-tbody');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error crítico en la carga de la página</td></tr>';
+        }
+    }
+});
+
+// Función para verificar autenticación
+function checkAuthStatus() {
+    const isAuthenticated = sessionStorage.getItem('adminAuthenticated');
+    
+    if (!isAuthenticated) {
+        console.log('Usuario no autenticado, redirigiendo al login...');
+        window.location.href = 'login.html';
+        return false;
+    }
+    
+    console.log('Usuario autenticado correctamente');
+    return true;
+}
+
+// Inicializar página de órdenes
+function initializeOrdersPage() {
+    console.log('Inicializando página de órdenes...');
+    console.log('Estado de datos:', {
+        ordenes: ordenes.length,
+        filteredOrders: filteredOrders.length
+    });
+    
+    // Configurar sidebar
+    setupSidebarNavigation();
+    
+    // Configurar perfil de usuario
+    setupUserProfile();
+    
+    // Configurar filtros
+    setupFilters();
+    
+    // Configurar paginación
+    setupPagination();
+    
+    // Solo renderizar si tenemos datos
+    if (ordenes.length > 0) {
+        console.log('Renderizando tabla con datos...');
+        renderOrdersTable();
+        updatePaginationButtons();
+    } else {
+        console.error('No hay datos para renderizar');
+        const tbody = document.getElementById('orders-tbody');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">No se pudieron cargar los datos de órdenes</td></tr>';
+        }
+    }
+    
+    // Configurar botón nuevo cliente
+    setupNewClientButton();
+}
+
+// Configurar navegación del sidebar
+function setupSidebarNavigation() {
+    const navLinks = document.querySelectorAll('.admin-nav .nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Solo prevenir default si no tiene href válido
+            if (!href || href === '#') {
+                e.preventDefault();
+                console.log('Link sin href válido clickeado');
+            } else {
+                console.log(`Navegando a: ${href}`);
+                // Permitir navegación normal para links válidos
+            }
+        });
+    });
+}
+
+// Configurar filtros
+function setupFilters() {
+    const filterSelect = document.getElementById('order-filter');
+    
+    if (!filterSelect) {
+        console.error('Elemento de filtro no encontrado');
+        return;
+    }
+    
+    filterSelect.addEventListener('change', function() {
+        const filterValue = this.value;
+        console.log('Filtro seleccionado:', filterValue);
+        
+        // Aplicar filtro
+        if (filterValue === 'Todas las Órdenes') {
+            filteredOrders = [...ordenes];
+        } else {
+            filteredOrders = ordenes.filter(orden => {
+                const estadoOrden = orden.estado.trim();
+                const filtroSeleccionado = filterValue.trim();
+                return estadoOrden === filtroSeleccionado;
+            });
+        }
+        
+        console.log('Órdenes filtradas:', filteredOrders.length);
+        
+        // Resetear a la primera página
+        currentPage = 1;
+        
+        // Actualizar tabla y paginación
+        renderOrdersTable();
+        updatePaginationButtons();
+    });
+}
+
+// Renderizar tabla de órdenes
+function renderOrdersTable() {
+    console.log('=== RENDERIZANDO TABLA ===');
+    console.log('filteredOrders:', filteredOrders.length);
+    console.log('currentPage:', currentPage);
+    console.log('itemsPerPage:', itemsPerPage);
+    
+    const tbody = document.getElementById('orders-tbody');
+    
+    if (!tbody) {
+        console.error('No se encontró el tbody de la tabla');
+        return;
+    }
+    
+    // Verificar que tengamos datos
+    if (!filteredOrders || filteredOrders.length === 0) {
+        console.warn('No hay datos filtrados para mostrar');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+                    No se encontraron órdenes para mostrar
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentOrders = filteredOrders.slice(startIndex, endIndex);
+    
+    console.log('Calculando órdenes para página actual:', {
+        startIndex,
+        endIndex,
+        currentOrders: currentOrders.length,
+        totalFiltered: filteredOrders.length
+    });
+    
+    if (currentOrders.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+                    No hay órdenes en esta página
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    // Generar HTML para las filas
+    const html = currentOrders.map(orden => {
+        console.log('Procesando orden:', orden);
+        return `
+            <tr>
+                <td>${orden.fecha}</td>
+                <td>${orden.numeroOrden}</td>
+                <td>${orden.cliente}</td>
+                <td><span class="estado-${orden.estado.toLowerCase()}">${orden.estado}</span></td>
+                <td>$${orden.monto.toLocaleString('es-CL', { minimumFractionDigits: 2 })}</td>
+            </tr>
+        `;
+    }).join('');
+    
+    tbody.innerHTML = html;
+    console.log('Tabla renderizada exitosamente con', currentOrders.length, 'filas');
+}
+
+// Configurar paginación
+function setupPagination() {
+    const paginationBtns = document.querySelectorAll('.pagination-btn');
+    
+    paginationBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+            
+            console.log('Click en botón paginación:', page, 'totalPages:', totalPages);
+            
+            switch(page) {
+                case 'primera':
+                    currentPage = 1;
+                    break;
+                case 'anterior':
+                    if (currentPage > 1) currentPage--;
+                    break;
+                case 'siguiente':
+                    if (currentPage < totalPages) currentPage++;
+                    break;
+                case 'ultima':
+                    currentPage = totalPages;
+                    break;
+                default:
+                    // Manejar botones numéricos (1, 2, 3, 4)
+                    const pageNum = parseInt(page);
+                    if (!isNaN(pageNum) && pageNum > 0 && pageNum <= totalPages) {
+                        currentPage = pageNum;
+                        console.log('Navegando a página:', pageNum);
+                    }
+                    break;
+            }
+            
+            renderOrdersTable();
+            updatePaginationButtons();
+        });
+    });
+    
+    updatePaginationButtons();
+}
+
+// Actualizar botones de paginación
+function updatePaginationButtons() {
+    const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+    const paginationBtns = document.querySelectorAll('.pagination-btn');
+    
+    console.log('=== ACTUALIZANDO PAGINACIÓN ===');
+    console.log('currentPage:', currentPage);
+    console.log('totalPages:', totalPages);
+    console.log('filteredOrders:', filteredOrders.length);
+    console.log('itemsPerPage:', itemsPerPage);
+    
+    // LIMPIAR COMPLETAMENTE TODOS LOS ESTADOS PREVIOS
+    paginationBtns.forEach(btn => {
+        btn.classList.remove('active', 'current', 'selected', 'btn-primary', 'btn-secondary');
+        btn.disabled = false;
+        btn.style.display = 'inline-block';
+    });
+    
+    paginationBtns.forEach(btn => {
+        const page = btn.getAttribute('data-page');
+        console.log('Procesando botón:', page);
+        
+        // Manejar botones de navegación especiales
+        if (page === 'primera' || page === 'anterior') {
+            btn.disabled = (currentPage <= 1);
+        } else if (page === 'siguiente' || page === 'ultima') {
+            btn.disabled = (currentPage >= totalPages || totalPages === 0);
+        } else {
+            // Botones numéricos (1, 2, 3, 4, etc.)
+            const pageNum = parseInt(page);
+            if (!isNaN(pageNum)) {
+                if (pageNum > totalPages && totalPages > 0) {
+                    btn.style.display = 'none'; // Ocultar páginas que no existen
+                } else {
+                    btn.style.display = 'inline-block'; // Mostrar páginas válidas
+                    
+                    // MARCAR SOLO LA PÁGINA ACTUAL
+                    if (pageNum === currentPage) {
+                        btn.classList.add('active');
+                        btn.classList.add('btn-primary');
+                        console.log('*** PÁGINA ACTIVA MARCADA:', pageNum);
+                    } else {
+                        btn.classList.add('btn-secondary');
+                    }
+                }
+            }
+        }
+    });
+    
+    console.log('Paginación actualizada completamente. Página activa:', currentPage);
+}
+
+// Configurar el perfil de usuario
+function setupUserProfile() {
+    const userNameElement = document.querySelector('.user-name');
+    
+    // Obtener nombre del usuario desde sessionStorage o usar valor por defecto
+    const adminUser = sessionStorage.getItem('adminUser') || 'Admin';
+    
+    if (userNameElement) {
+        userNameElement.textContent = adminUser;
+    }
+}
+
+// Configurar botón nuevo cliente
+function setupNewClientButton() {
+    const newClientBtn = document.querySelector('.btn-nuevo-cliente');
+    
+    if (newClientBtn) {
+        newClientBtn.addEventListener('click', function() {
+            alert('Funcionalidad de "Nuevo Cliente" será implementada próximamente');
+        });
+    }
+}
+
+// Exportar funciones para uso externo si es necesario
+window.adminOrders = {
+    renderOrdersTable: renderOrdersTable,
+    filteredOrders: filteredOrders
+};
