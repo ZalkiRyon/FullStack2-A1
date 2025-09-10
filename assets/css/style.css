@@ -46,7 +46,8 @@ h1 {
 main {
   min-height: 100vh;
 }
-.seccion-sesion > nav > ul > li > a {
+.seccion-navSesion > ul > li > a,
+.breadcrumbProductoDetalle > ul > li {
   color: var(--emerald);
   text-decoration: none;
   font-weight: 500;
@@ -158,7 +159,8 @@ footer {
 .mainInicioSesion,
 .mainNosotros,
 .mainBlog,
-.mainContacto {
+.mainContacto,
+.mainProductos {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -184,7 +186,9 @@ footer {
 
 .btnRegistrar,
 .btnInicioSesion,
-.btnContacto {
+.btnContacto,
+.btnAddProductos,
+.btnAddProductoDetalle {
   background-color: var(--emerald);
   color: white;
   border: none;
@@ -209,7 +213,8 @@ footer {
   object-fit: fill;
 }
 
-.imgLogoEmpresa {
+.imgLogoEmpresa,
+.imgProductos {
   width: 100%;
   height: 100%;
 }
@@ -227,7 +232,9 @@ footer {
 /* Estilos pagina nostros y blog*/
 .mainNosotros,
 .mainBlog,
-.mainContacto {
+.mainContacto,
+.mainProductos,
+.mainDetalleProducto {
   justify-content: flex-start;
   padding: 20px 60px;
   gap: 60px;
@@ -253,4 +260,43 @@ footer {
 .mainBlog > article {
   width: 95%;
   padding: 20px 60px;
+}
+
+/* Estilos Productos */
+.cardProductos {
+  background-color: var(--light-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 60px;
+  gap: 10px;
+}
+
+.containerImgProductos {
+  background-color: #8b4513;
+  width: 100%;
+  height: 150px;
+}
+
+.containerImgProductoDetalle {
+  width: 50%;
+  height: 600px;
+  background-color: var(--light-bg);
+}
+.imgDetalleProducto {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.detalleProducto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  width: 40%;
+  height: 500px;
+}
+.btnAddProductoDetalle{
+  align-self: auto;
 }
