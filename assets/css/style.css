@@ -221,6 +221,7 @@ footer {
 .imgProductos {
   width: 100%;
   height: 100%;
+   object-fit: cover;
 }
 
 .sectionInicioSesion,
@@ -293,6 +294,15 @@ footer {
 }
 
 /* Estilos Productos */
+.sectionTodosLosProductos {
+  display: grid; /* Habilita la cuadrícula */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto; 
+  column-gap: 2rem;
+  row-gap: 2rem;
+
+
+}
 .cardProductos {
   background-color: var(--light-bg);
   display: flex;
@@ -303,7 +313,7 @@ footer {
 }
 
 .containerImgProductos {
-  background-color: #8b4513;
+  background-color: var(--light-bg);
   width: 100%;
   height: 150px;
 }
@@ -318,7 +328,7 @@ footer {
 .imgProductoCarrito {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .detalleProducto {

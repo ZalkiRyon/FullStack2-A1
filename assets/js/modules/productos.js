@@ -104,19 +104,31 @@ export function initializerListaProductos() {
   }
   console.log("Productos inicializados en localStorage");
 
-  renderizarProductos();
+  const ruta = window.location.pathname.split("/").pop();
+
+  if (ruta === "" || ruta === "index.html") {
+    renderProductosPagPrincipal();
+  }
+  if (ruta === "productos.html") {
+    renderProductos();
+  }
+  if (ruta === "detalleProducto.html") {
+    renderDetalleProducto();
+  }
 }
 
-function renderizarProductos() {
+const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+
+function renderProductosPagPrincipal() {
   // Renderizado pag principal
   const containerPagPrincipal = document.querySelector(".seccion-productos");
 
   if (!containerPagPrincipal) {
-    console.error(`No se encontró el contenedor con clase: ${containerPagPrincipal}`);
+    console.error(
+      `No se encontró el contenedor con clase: ${containerPagPrincipal}`
+    );
     return;
   }
-
-  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
 
   const primerosTresProductos = productos.slice(0, 3);
 
@@ -136,26 +148,91 @@ function renderizarProductos() {
     `
     )
     .join("");
+}
 
+function renderProductos() {
   // Renderizado Pag Producto
   const containerPagProducto = document.querySelector(
     ".sectionTodosLosProductos"
   );
 
+  if (!containerPagProducto) {
+    console.error(
+      `No se encontró el contenedor con clase: ${containerPagProducto}`
+    );
+    return;
+  }
+
   containerPagProducto.innerHTML = productos
     .map(
-      (producto) => `
-        <article class="cartaProducto">
-          <div class="imgCartaProducto">
-            <img src="${producto.imagen}" alt="Producto ${producto.nombre}" />
+      (producto) =>
+        `
+        <article class="cardProductos" data-producto-id="${producto.id}">
+          <div class="containerImgProductos">
+            <img src="../../${producto.imagen}" alt="Imagen Producto ${
+          producto.nombre
+        }" class="imgProductos" />
           </div>
-          <a href="">${producto.nombre}</a>
-          <div class="contenidoCartaProducto">
-            <p>${producto.categoria}</p>
-            <p>$${producto.precio.toLocaleString()}</p>
-          </div>
+          <h6>${producto.nombre}</h6>
+          <span>$${producto.precio.toLocaleString()}</span>
+          <button class="btnAddProductos">Añadir</button>
         </article>
     `
     )
     .join("");
+  setupEvent();
 }
+
+function setupEvent() {
+  // Identificar donde estaremos ubicados
+  const container = document.querySelector(".sectionTodosLosProductos");
+
+  container.addEventListener("click", (event) => {
+    const target = event.target;
+
+    // Solo para el evento de ver detalle
+    // Buscamos el target mas cercano al la carta del producto
+    const card = target.closest(".cardProductos");
+    if (card && !target.matches(".btnAddProductos")) {
+      handleClickDetalle(card);
+    }
+  });
+
+  // TODO: evento de agregar al carrito
+}
+
+function handleClickDetalle(cardElement) {
+  const productoId = cardElement.getAttribute("data-producto-id");
+  redirectDetalleProducto(productoId);
+}
+
+function redirectDetalleProducto(productoId) {
+  const producto = productos.find((p) => p.id == productoId);
+
+  if (producto) {
+    localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+    window.location.href = "/pages/tienda/detalleProducto.html";
+  }
+}
+
+function renderDetalleProducto() {
+  const producto =
+    JSON.parse(localStorage.getItem("productoSeleccionado")) || [];
+  document.getElementById("nombreDetalleProducto").textContent =
+    producto.nombre;
+  document.getElementById("barraNombreDetalleProducto").textContent =
+    producto.nombre;
+  document.getElementById(
+    "precioDetalleProducto"
+  ).textContent = `$${producto.precio.toLocaleString()}`;
+  document.getElementById("descripcionDetalleProducto").textContent =
+    producto.descripcion;
+  document.getElementById("imgDetalleProducto").src = "/" + producto.imagen;
+  document.getElementById("imgDetalleProducto").alt = producto.nombre;
+}
+
+//  document.querySelector(".btnAddProductos").addEventListener("click", function(event){
+//     // Si no agrego el stopPropagation, saltara el evento por la etiqueta padre ya que lo heredan
+//     event.stopPropagation();
+//     console.log("boton", event)
+//   })

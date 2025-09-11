@@ -9,14 +9,10 @@ import { initializerListaProductos } from "./modules/productos.js";
 function initializerApp() {
   console.log("Inicializando aplicación Huerto Hogar...");
 
-
-  if ( window.location.pathname === "producto"){
-    initializerListaProductos();
-  }
   // Inicializar módulos
-
+  initializerListaProductos();
 }
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", initializerApp);
-console.log()
+
