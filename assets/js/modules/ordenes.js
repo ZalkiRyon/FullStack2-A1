@@ -1,6 +1,6 @@
-// Módulo de clientes y órdenes para el área de administración
+// Módulo de ordenes para el área de administración
 
-// Lista de órdenes/clientes para el módulo de administración
+// Lista de órdenes para el módulo de administración
 export const ordenes = [
   { fecha: "2024-06-01", numeroOrden: "SO1001", cliente: "Acme Corporation", estado: "Enviado", monto: 2500.00 },
   { fecha: "2024-06-02", numeroOrden: "SO1002", cliente: "Bravo Solutions", estado: "Pendiente", monto: 1200.00 },

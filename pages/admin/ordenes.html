@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- CSS específico del admin -->
     <link rel="stylesheet" href="../../assets/css/admin.css">
+    <!-- CSS específico de órdenes -->
+    <link rel="stylesheet" href="../../assets/css/ordenes.css">
     
     <!-- Fuente de Google Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,7 +104,10 @@
                     <div class="user-avatar">
                         <i class="user-icon">👤</i>
                     </div>
-                    <span class="user-name">Usuario</span>
+                    <span class="user-name" id="adminUserInfo">Administrador</span>
+                    <button class="btn btn-sm btn-outline-danger mt-2" id="logoutButton">
+                        Cerrar Sesión
+                    </button>
                 </div>
             </div>
         </aside>
@@ -113,10 +118,12 @@
                 <!-- Header Section -->
                 <div class="orders-header">
                     <div class="header-left">
-                        <h1 class="page-title">Clientes</h1>
+                        <div class="title-and-button">
+                            <h1 class="page-title">Usuarios</h1>
+                            <button class="btn-nuevo-usuario">NUEVO USUARIO</button>
+                        </div>
                     </div>
-                    <div class="header-right">
-                        <button class="btn-nuevo-usuario">NUEVO CLIENTE</button>
+                    <div class="header-right">                        
                         <div class="notification-bell">🔔</div>
                     </div>
                 </div>
@@ -125,10 +132,10 @@
                 <div class="filter-section">
                     <select id="status-filter" class="status-dropdown">
                         <option value="all">Todas las ordenes de venta ▼</option>
-                        <option value="Shipped">Enviadas</option>
-                        <option value="Pending">Pendientes</option>
-                        <option value="Cancelled">Canceladas</option>
-                        <option value="Processing">En Proceso</option>
+                        <option value="Enviado">Enviado</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Cancelado">Cancelado</option>
+                        <option value="Procesando">Procesando</option>
                     </select>
                 </div>
 
@@ -173,5 +180,9 @@
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS personalizado de admin -->
+    <script src="../../assets/js/admin.js"></script>
+    <!-- JS específico de órdenes -->
+    <script type="module" src="../../assets/js/ordenes-admin.js"></script>
 </body>
 </html>
