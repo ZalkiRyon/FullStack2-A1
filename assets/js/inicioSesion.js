@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         // Importar usuarios desde el módulo
-        let usuarios = [];
+        let todosLosUsuarios = [];
         try {
             const modulo = await import('./modules/usuarios.js');
-            usuarios = modulo.usuarios;
-            console.log('Usuarios cargados:', usuarios);
+            todosLosUsuarios = modulo.obtenerTodosLosUsuarios();
+            console.log('Usuarios cargados (admin + registrados desde localStorage):', todosLosUsuarios.length);
         } catch (err) {
             console.error('Error cargando usuarios:', err);
             alert('Error cargando usuarios. Verifica la conexión.');
@@ -28,16 +28,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         // Buscar usuario
-        const user = usuarios.find(u => u.email === email && u.password === password);
+        const user = todosLosUsuarios.find(u => u.email === email && u.password === password);
         
         if (!user) {
             alert('Correo o contraseña incorrectos.');
             return;
         }
 
-        // Si es admin, redirigir al dashboard
+        // Redirigir según el rol del usuario
         if (user.role === 'admin') {
-            // Guardar información de sesión
+            // Guardar información de sesión para admin
             sessionStorage.setItem('adminLoggedIn', 'true');
             sessionStorage.setItem('adminUser', user.email);
             sessionStorage.setItem('userId', user.id);
@@ -46,8 +46,19 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             // Redirigir al dashboard
             window.location.href = '../admin/dashboard.html';
+        } else if (user.role === 'cliente') {
+            // Guardar información de sesión para cliente
+            sessionStorage.setItem('clienteLoggedIn', 'true');
+            sessionStorage.setItem('clienteUser', user.email);
+            sessionStorage.setItem('userId', user.id);
+            sessionStorage.setItem('clienteNombre', user.nombre || 'Usuario');
+            
+            alert(`¡Bienvenido, ${user.nombre || 'Usuario'}!`);
+            
+            // Redirigir a la tienda (por ahora al inicio)
+            window.location.href = '../../index.html';
         } else {
-            alert('Acceso solo para administradores en esta versión.');
+            alert('Tipo de usuario no reconocido.');
         }
     });
 });
