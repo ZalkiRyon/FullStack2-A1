@@ -1,7 +1,7 @@
 export const usuarios = [
   {
     id: 1,
-    username: "admin",
+    email: "admin",
     password: "admin123",
     role: "admin",
   },
