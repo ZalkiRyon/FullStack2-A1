@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Usuario - Huerto Hogar Admin</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <!-- CSS específico del admin -->
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <!-- CSS específico de nuevo usuario -->
+    <link rel="stylesheet" href="../../assets/css/nuevoUsuario.css">
+    
+    <!-- Fuente de Google Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Fuente de Google Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../../assets/images/icono.png" alt="Logo Huerto Hogar" class="logo-img">
+                <span class="logo-text">Huerto Hogar</span>
+            </div>
+            
+            <nav class="admin-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="nav-icon">📊</i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ordenes.html" class="nav-link">
+                            <i class="nav-icon">📦</i>
+                            <span>Órdenes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon">📋</i>
+                            <span>Inventario</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon">📈</i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon">👥</i>
+                            <span>Empleados</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon">👤</i>
+                            <span>Clientes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="admin-sidebar-footer">
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon">⚙️</i>
+                        <span>Configuraciones</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon">🔧</i>
+                        <span>Perfil</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon">🔍</i>
+                        <span>Buscar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="nav-icon">🚪</i>
+                        <span>Ayuda</span>
+                    </a>
+                </div>
+                
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="user-icon">👤</i>
+                    </div>
+                    <span class="user-name" id="adminUserInfo">Administrador</span>
+                    <button class="btn btn-sm btn-outline-danger mt-2" id="logoutButton">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="nuevo-usuario-container">
+                <!-- Header -->
+                <div class="page-header">
+                    <h1 class="page-title">NUEVO USUARIO</h1>
+                </div>
+
+                <!-- Form Container -->
+                <div class="form-container">
+                    <form id="nuevoUsuarioForm" class="usuario-form">
+                        <!-- Registro de usuario section -->
+                        <div class="form-section">
+                            <div class="section-title">Registro de usuario</div>
+                        </div>
+
+                        <!-- Nombre Completo -->
+                        <div class="form-group">
+                            <label for="nombreCompleto" class="form-label">NOMBRE COMPLETO</label>
+                            <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" required>
+                        </div>
+
+                        <!-- Correo -->
+                        <div class="form-group">
+                            <label for="correo" class="form-label">CORREO</label>
+                            <input type="email" class="form-control" id="correo" name="correo" required>
+                        </div>
+
+                        <!-- Telefono -->
+                        <div class="form-group">
+                            <label for="telefono" class="form-label">TELEFONO</label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="form-group">
+                            <label for="contrasena" class="form-label">CONTRASEÑA</label>
+                            <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                        </div>
+
+                        <!-- Confirmar Contraseña -->
+                        <div class="form-group">
+                            <label for="confirmarContrasena" class="form-label">CONFIRMAR CONTRASEÑA</label>
+                            <input type="password" class="form-control" id="confirmarContrasena" name="confirmarContrasena" required>
+                        </div>
+
+                        <!-- Telefono (opcional) -->
+                        <div class="form-group">
+                            <label for="telefonoOpcional" class="form-label">TELEFONO (opcional)</label>
+                            <input type="tel" class="form-control" id="telefonoOpcional" name="telefonoOpcional">
+                        </div>
+
+                        <!-- Row with two dropdowns -->
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label for="direccionRegion" class="form-label">Dirección de región</label>
+                                <select class="form-control" id="direccionRegion" name="direccionRegion" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="region-metropolitana">Región Metropolitana de Santiago</option>
+                                    <option value="region-valparaiso">Región de Valparaíso</option>
+                                    <option value="region-biobio">Región del Biobío</option>
+                                    <option value="region-maule">Región del Maule</option>
+                                    <option value="region-ohiggins">Región de O'Higgins</option>
+                                    <option value="region-araucania">Región de La Araucanía</option>
+                                    <option value="region-antofagasta">Región de Antofagasta</option>
+                                    <option value="region-atacama">Región de Atacama</option>
+                                    <option value="region-coquimbo">Región de Coquimbo</option>
+                                    <option value="region-los-rios">Región de Los Ríos</option>
+                                    <option value="region-los-lagos">Región de Los Lagos</option>
+                                    <option value="region-tarapaca">Región de Tarapacá</option>
+                                    <option value="region-arica">Región de Arica y Parinacota</option>
+                                    <option value="region-aysen">Región de Aysén</option>
+                                    <option value="region-magallanes">Región de Magallanes</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group half-width">
+                                <label for="direccionComuna" class="form-label">Dirección de comuna</label>
+                                <select class="form-control" id="direccionComuna" name="direccionComuna" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="santiago">Santiago</option>
+                                    <option value="las-condes">Las Condes</option>
+                                    <option value="providencia">Providencia</option>
+                                    <option value="vitacura">Vitacura</option>
+                                    <option value="maipu">Maipú</option>
+                                    <option value="nunoa">Ñuñoa</option>
+                                    <option value="la-florida">La Florida</option>
+                                    <option value="puente-alto">Puente Alto</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-registrar">REGISTRAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS personalizado de admin -->
+    <script src="../../assets/js/admin.js"></script>
+    <!-- JS específico de nuevo usuario -->
+    <script src="../../assets/js/nuevoUsuario.js"></script>
+</body>
+</html>
