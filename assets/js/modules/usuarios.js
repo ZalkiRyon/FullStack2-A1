@@ -19,10 +19,14 @@ export function obtenerTodosLosUsuarios() {
       email: user.correo,
       password: user.contrasena,
       role: user.role || 'cliente',
-      nombre: user.nombreCompleto,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      run: user.run,
       telefono: user.telefono,
       region: user.direccionRegion,
       comuna: user.direccionComuna,
+      direccion: user.direccion,
+      comentario: user.comentario,
       fechaRegistro: user.fechaRegistro
     }));
     

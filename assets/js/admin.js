@@ -12,20 +12,28 @@ function checkAdminAuth() {
     const isAdminLoggedIn = sessionStorage.getItem('adminLoggedIn');
     const adminUser = sessionStorage.getItem('adminUser');
     
-    if (!isAdminLoggedIn || isAdminLoggedIn !== 'true') {
+    // También verificar si es vendedor (pueden acceder al admin)
+    const isVendedorLoggedIn = sessionStorage.getItem('vendedorLoggedIn');
+    const vendedorUser = sessionStorage.getItem('vendedorUser');
+    
+    if (!isAdminLoggedIn && !isVendedorLoggedIn) {
         // Redirigir al login si no está autenticado
-        alert('Debes iniciar sesión como administrador para acceder a esta página.');
+        alert('Debes iniciar sesión como administrador o vendedor para acceder a esta página.');
         window.location.href = '../tienda/inicioSesion.html';
         return;
     }
     
     // Mostrar información del usuario logueado si hay elementos para ello
     const userInfoElement = document.querySelector('#adminUserInfo');
-    if (userInfoElement && adminUser) {
-        userInfoElement.textContent = `Bienvenido, ${adminUser}`;
+    if (userInfoElement) {
+        if (isAdminLoggedIn && adminUser) {
+            userInfoElement.textContent = `Admin: ${adminUser}`;
+        } else if (isVendedorLoggedIn && vendedorUser) {
+            userInfoElement.textContent = `Vendedor: ${vendedorUser}`;
+        }
     }
     
-    console.log('Admin autenticado:', adminUser);
+    console.log('Usuario autenticado:', adminUser || vendedorUser);
 }
 
 function setupLogout() {
@@ -40,10 +48,18 @@ function setupLogout() {
 
 function logout() {
     if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-        // Limpiar el sessionStorage
-        sessionStorage.removeItem('adminLoggedIn');
-        sessionStorage.removeItem('adminUser');
-        sessionStorage.removeItem('userId');
+        // Usar la función global de cerrar sesión si está disponible
+        if (window.validarSesion && window.validarSesion.cerrarSesion) {
+            window.validarSesion.cerrarSesion();
+        } else {
+            // Fallback: limpiar manualmente
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('adminUser');
+            sessionStorage.removeItem('vendedorLoggedIn');
+            sessionStorage.removeItem('vendedorUser');
+            sessionStorage.removeItem('vendedorNombre');
+            sessionStorage.removeItem('userId');
+        }
         
         // Redirigir al login
         window.location.href = '../tienda/inicioSesion.html';
@@ -53,7 +69,8 @@ function logout() {
 // Función para validar acceso admin (puede ser usada por otras páginas)
 function validateAdminAccess() {
     const isAdminLoggedIn = sessionStorage.getItem('adminLoggedIn');
-    return isAdminLoggedIn === 'true';
+    const isVendedorLoggedIn = sessionStorage.getItem('vendedorLoggedIn');
+    return isAdminLoggedIn === 'true' || isVendedorLoggedIn === 'true';
 }
 
 // Exportar funciones si se necesitan en otros scripts

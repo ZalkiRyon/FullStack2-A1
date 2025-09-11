@@ -1,10 +1,11 @@
 // Lógica de login para inicioSesion.html (admin y usuarios)
+import { obtenerTodosLosUsuarios } from './modules/usuarios.js';
 
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.formInicioSesion');
     if (!form) return;
 
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
         const email = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
@@ -15,17 +16,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
 
-        // Importar usuarios desde el módulo
-        let todosLosUsuarios = [];
-        try {
-            const modulo = await import('./modules/usuarios.js');
-            todosLosUsuarios = modulo.obtenerTodosLosUsuarios();
-            console.log('Usuarios cargados (admin + registrados desde localStorage):', todosLosUsuarios.length);
-        } catch (err) {
-            console.error('Error cargando usuarios:', err);
-            alert('Error cargando usuarios. Verifica la conexión.');
-            return;
-        }
+        // Obtener todos los usuarios (admin + localStorage)
+        const todosLosUsuarios = obtenerTodosLosUsuarios();
+        console.log('Usuarios cargados (admin + registrados desde localStorage):', todosLosUsuarios.length);
 
         // Buscar usuario
         const user = todosLosUsuarios.find(u => u.email === email && u.password === password);
