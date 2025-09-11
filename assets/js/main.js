@@ -4,6 +4,7 @@
 
 // IMPORTAR MODULOS
 import { initializerListaProductos } from "./modules/productos.js";
+import { initializerCarrito } from "./modules/carrito.js";
 
 // Función principal de inicialización
 function initializerApp() {
@@ -11,6 +12,7 @@ function initializerApp() {
 
   // Inicializar módulos
   initializerListaProductos();
+  initializerCarrito();
 }
 
 // Inicializar cuando el DOM esté listo

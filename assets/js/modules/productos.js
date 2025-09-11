@@ -4,6 +4,8 @@
 // 3. Funcion para obtener los datos
 // 4. Funciones para renderizar los productos en el DOM
 
+import { handleClickAgregarCarrito } from "./carrito.js";
+
 const listaProductos = [
   {
     id: 1,
@@ -117,11 +119,13 @@ export function initializerListaProductos() {
   }
 }
 
-const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+
 
 function renderProductosPagPrincipal() {
   // Renderizado pag principal
   const containerPagPrincipal = document.querySelector(".seccion-productos");
+
+  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
 
   if (!containerPagPrincipal) {
     console.error(
@@ -163,6 +167,8 @@ function renderProductos() {
     return;
   }
 
+  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+
   containerPagProducto.innerHTML = productos
     .map(
       (producto) =>
@@ -175,7 +181,7 @@ function renderProductos() {
           </div>
           <h6>${producto.nombre}</h6>
           <span>$${producto.precio.toLocaleString()}</span>
-          <button class="btnAddProductos">Añadir</button>
+          <button class="btnAddProductos" id="${producto.id}" >Añadir</button>
         </article>
     `
     )
@@ -193,12 +199,17 @@ function setupEvent() {
     // Solo para el evento de ver detalle
     // Buscamos el target mas cercano al la carta del producto
     const card = target.closest(".cardProductos");
+
     if (card && !target.matches(".btnAddProductos")) {
       handleClickDetalle(card);
     }
-  });
 
-  // TODO: evento de agregar al carrito
+    // Llamo una funcion que viene desde carrito para entregarle el id del producto que seleccione
+    if (target.matches(".btnAddProductos")) {
+      handleClickAgregarCarrito(target);
+      return;
+    }
+  });
 }
 
 function handleClickDetalle(cardElement) {
@@ -207,6 +218,7 @@ function handleClickDetalle(cardElement) {
 }
 
 function redirectDetalleProducto(productoId) {
+  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
   const producto = productos.find((p) => p.id == productoId);
 
   if (producto) {
@@ -231,8 +243,3 @@ function renderDetalleProducto() {
   document.getElementById("imgDetalleProducto").alt = producto.nombre;
 }
 
-//  document.querySelector(".btnAddProductos").addEventListener("click", function(event){
-//     // Si no agrego el stopPropagation, saltara el evento por la etiqueta padre ya que lo heredan
-//     event.stopPropagation();
-//     console.log("boton", event)
-//   })
