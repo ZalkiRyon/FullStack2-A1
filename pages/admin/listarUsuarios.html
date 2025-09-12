@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Órdenes - Huerto Hogar Admin</title>
+    <title>Usuarios - Huerto Hogar Admin</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- CSS específico del admin -->
     <link rel="stylesheet" href="../../assets/css/admin.css">
-    <!-- CSS específico de órdenes -->
-    <link rel="stylesheet" href="../../assets/css/ordenes.css">
+    <!-- CSS específico de usuarios -->
+    <link rel="stylesheet" href="../../assets/css/usuarios.css">
     
     <!-- Fuente de Google Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,7 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a href="ordenes.html" class="nav-link">
                             <i class="nav-icon">📦</i>
                             <span>Órdenes</span>
@@ -63,7 +63,7 @@
                             <span>Empleados</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a href="listarUsuarios.html" class="nav-link">
                             <i class="nav-icon">👤</i>
                             <span>Usuarios</span>
@@ -114,12 +114,12 @@
         
         <!-- Main Content -->
         <main class="admin-main">
-            <div class="orders-container">
+            <div class="users-container">
                 <!-- Header Section -->
-                <div class="orders-header">
+                <div class="users-header">
                     <div class="header-left">
                         <div class="title-and-button">
-                            <h1 class="page-title">Usuarios</h1>
+                            <h1 class="page-title">Gestión de Usuarios</h1>
                             <button class="btn-nuevo-usuario" onclick="window.location.href='nuevoUsuario.html'">NUEVO USUARIO</button>
                         </div>
                     </div>
@@ -130,49 +130,114 @@
 
                 <!-- Filter Section -->
                 <div class="filter-section">
-                    <select id="status-filter" class="status-dropdown">
-                        <option value="all">Todas las ordenes de venta ▼</option>
-                        <option value="Enviado">Enviado</option>
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Cancelado">Cancelado</option>
-                        <option value="Procesando">Procesando</option>
+                    <select id="role-filter" class="status-dropdown">
+                        <option value="all">Todos los usuarios ▼</option>
+                        <option value="admin">Administradores</option>
+                        <option value="cliente">Clientes</option>
+                        <option value="vendedor">Vendedores</option>
                     </select>
                 </div>
 
-                <!-- Orders Table -->
+                <!-- Users Table -->
                 <div class="table-container">
-                    <table class="orders-table">
+                    <table class="users-table">
                         <thead>
                             <tr>
-                                <th>Fecha</th>
-                                <th>Número de Orden</th>
-                                <th>Cliente</th>
-                                <th>Estado</th>
-                                <th>Monto</th>
+                                <th>Seleccionar</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>RUN</th>
+                                <th>Rol</th>
+                                <th>Fecha Registro</th>
+                                <th>Teléfono</th>
                             </tr>
                         </thead>
-                        <tbody id="orders-tbody">
+                        <tbody id="users-tbody">
                             <!-- Datos cargados dinámicamente -->
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <div class="pagination-section">
-                    <button class="page-btn" data-page="primera">«</button>
-                    <button class="page-btn" data-page="anterior">‹</button>
-                    <button class="page-btn page-number" data-page="1">1</button>
-                    <button class="page-btn page-number" data-page="2">2</button>
-                    <button class="page-btn page-number" data-page="3">3</button>
-                    <button class="page-btn page-number" data-page="4">4</button>
-                    <button class="page-btn page-number" data-page="5">5</button>
-                    <button class="page-btn page-number" data-page="6">6</button>
-                    <button class="page-btn page-number" data-page="7">7</button>
-                    <button class="page-btn page-number" data-page="8">8</button>
-                    <button class="page-btn page-number" data-page="9">9</button>
-                    <button class="page-btn page-number" data-page="10">10</button>
-                    <button class="page-btn" data-page="siguiente">›</button>
-                    <button class="page-btn" data-page="ultima">»</button>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        <span id="pagination-info">Mostrando 1-10 de <span id="total-users">0</span> usuarios</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button id="prev-page" class="btn-pagination" disabled>← Anterior</button>
+                        <span class="page-numbers" id="page-numbers">
+                            <!-- Números de página se generan dinámicamente -->
+                        </span>
+                        <button id="next-page" class="btn-pagination">Siguiente →</button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-section">
+                    <button id="edit-user-btn" class="btn-edit-user" disabled onclick="editarUsuarioSeleccionado()">EDITAR USUARIO</button>
+                    <button id="delete-user-btn" class="btn-delete-user" disabled onclick="eliminarUsuarioSeleccionado()">ELIMINAR USUARIO</button>
+                </div>
+
+                <!-- User Details Panel -->
+                <div id="user-details-panel" class="user-details-panel" style="display: none;">
+                    <div class="details-header">
+                        <h3>Detalles del Usuario Seleccionado</h3>
+                        <button class="btn-close-details" onclick="cerrarDetallesUsuario()">✕</button>
+                    </div>
+                    <div class="details-content">
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Nombre Completo:</label>
+                                <span id="detail-nombre">-</span>
+                            </div>
+                            <div class="detail-group">
+                                <label>RUN:</label>
+                                <span id="detail-run">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Correo Electrónico:</label>
+                                <span id="detail-correo">-</span>
+                            </div>
+                            <div class="detail-group">
+                                <label>Teléfono:</label>
+                                <span id="detail-telefono">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Rol:</label>
+                                <span id="detail-rol" class="role-badge">-</span>
+                            </div>
+                            <div class="detail-group">
+                                <label>Fecha de Registro:</label>
+                                <span id="detail-fecha">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group full-width">
+                                <label>Dirección:</label>
+                                <span id="detail-direccion">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Región:</label>
+                                <span id="detail-region">-</span>
+                            </div>
+                            <div class="detail-group">
+                                <label>Comuna:</label>
+                                <span id="detail-comuna">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group full-width">
+                                <label>Comentarios:</label>
+                                <span id="detail-comentario">-</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -182,7 +247,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JS personalizado de admin -->
     <script src="../../assets/js/admin.js"></script>
-    <!-- JS específico de órdenes -->
-    <script type="module" src="../../assets/js/ordenes-admin.js"></script>
+    <!-- JS específico de lista de usuarios -->
+    <script type="module" src="../../assets/js/listarUsuarios-admin.js"></script>
 </body>
 </html>

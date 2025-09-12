@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login System</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .error { color: red; }
+        .success { color: green; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test Login System</h1>
+    
+    <div class="test-section">
+        <h3>📊 LocalStorage Status</h3>
+        <button onclick="checkLocalStorage()">Check localStorage</button>
+        <div id="localStorage-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>👥 All Users</h3>
+        <button onclick="loadAllUsers()">Load All Users</button>
+        <div id="users-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🔑 Test Login</h3>
+        <input type="email" id="test-email" placeholder="Email" value="admin@huertohogar.com">
+        <input type="password" id="test-password" placeholder="Password" value="admin123">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🧹 Clear Data</h3>
+        <button onclick="clearLocalStorage()">Clear localStorage</button>
+        <button onclick="clearSessionStorage()">Clear sessionStorage</button>
+    </div>
+
+    <script type="module">
+        import { obtenerTodosLosUsuarios, validarCredenciales } from './assets/js/modules/usuarios.js';
+        
+        window.checkLocalStorage = function() {
+            const result = document.getElementById('localStorage-result');
+            const data = localStorage.getItem('usuariosRegistrados');
+            if (data) {
+                const users = JSON.parse(data);
+                result.innerHTML = `<div class="success">✅ Found ${users.length} users in localStorage</div>
+                    <pre>${JSON.stringify(users, null, 2)}</pre>`;
+            } else {
+                result.innerHTML = '<div class="error">❌ No users in localStorage</div>';
+            }
+        };
+        
+        window.loadAllUsers = function() {
+            const result = document.getElementById('users-result');
+            try {
+                const users = obtenerTodosLosUsuarios();
+                result.innerHTML = `<div class="success">✅ Total users loaded: ${users.length}</div>
+                    <pre>${JSON.stringify(users, null, 2)}</pre>`;
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        };
+        
+        window.testLogin = function() {
+            const email = document.getElementById('test-email').value;
+            const password = document.getElementById('test-password').value;
+            const result = document.getElementById('login-result');
+            
+            try {
+                const user = validarCredenciales(email, password);
+                if (user) {
+                    result.innerHTML = `<div class="success">✅ Login successful!</div>
+                        <pre>${JSON.stringify(user, null, 2)}</pre>`;
+                } else {
+                    result.innerHTML = '<div class="error">❌ Invalid credentials</div>';
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        };
+        
+        window.clearLocalStorage = function() {
+            localStorage.clear();
+            alert('localStorage cleared');
+        };
+        
+        window.clearSessionStorage = function() {
+            sessionStorage.clear();
+            alert('sessionStorage cleared');
+        };
+    </script>
+</body>
+</html>

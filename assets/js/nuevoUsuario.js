@@ -1,23 +1,70 @@
 // Validación y funcionalidad para el formulario de nuevo usuario
 import { obtenerTodosLosUsuarios } from './modules/usuarios.js';
 
-// Validación de RUT (transferido desde validaRut.js)
-var Fn = {
-    // Valida el rut con su cadena completa "XXXXXXXX-X"
-    validaRut : function (rutCompleto) {
-        if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rutCompleto ))
-            return false;
-        var tmp 	= rutCompleto.split('-');
-        var digv	= tmp[1]; 
-        var rut 	= tmp[0];
-        if ( digv == 'K' ) digv = 'k' ;
-        return (Fn.dv(rut) == digv );
+// Validación de RUN chileno mejorada
+var ValidadorRun = {
+    // Limpia el RUN eliminando puntos, espacios y convirtiendo a mayúsculas
+    limpiarRun: function(run) {
+        return run.toString().replace(/[.\s-]/g, '').toUpperCase();
     },
-    dv : function(T){
-        var M=0,S=1;
-        for(;T;T=Math.floor(T/10))
-            S=(S+T%10*(9-M++%6))%11;
-        return S?S-1:'k';
+    
+    // Valida si el RUN tiene formato correcto (solo números y K al final)
+    formatoValido: function(run) {
+        const runLimpio = this.limpiarRun(run);
+        return /^[0-9]{7,8}[0-9K]$/.test(runLimpio);
+    },
+    
+    // Calcula el dígito verificador
+    calcularDV: function(numero) {
+        let suma = 0;
+        let multiplicador = 2;
+        
+        // Recorrer el número de derecha a izquierda
+        for (let i = numero.length - 1; i >= 0; i--) {
+            suma += parseInt(numero[i]) * multiplicador;
+            multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
+        }
+        
+        const resto = suma % 11;
+        const dv = 11 - resto;
+        
+        if (dv === 11) return '0';
+        if (dv === 10) return 'K';
+        return dv.toString();
+    },
+    
+    // Valida el RUN completo
+    validar: function(run) {
+        if (!run || run.length === 0) return false;
+        
+        const runLimpio = this.limpiarRun(run);
+        
+        // Verificar formato básico
+        if (!this.formatoValido(runLimpio)) return false;
+        
+        // Separar número y dígito verificador
+        const numero = runLimpio.slice(0, -1);
+        const dvIngresado = runLimpio.slice(-1);
+        
+        // Calcular dígito verificador esperado
+        const dvCalculado = this.calcularDV(numero);
+        
+        // Comparar
+        return dvIngresado === dvCalculado;
+    },
+    
+    // Formatea el RUN con puntos y guión
+    formatear: function(run) {
+        const runLimpio = this.limpiarRun(run);
+        if (runLimpio.length < 8) return run;
+        
+        const numero = runLimpio.slice(0, -1);
+        const dv = runLimpio.slice(-1);
+        
+        // Agregar puntos cada 3 dígitos desde la derecha
+        let numeroFormateado = numero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        
+        return `${numeroFormateado}-${dv}`;
     }
 };
 
@@ -194,23 +241,27 @@ document.addEventListener('DOMContentLoaded', function() {
         formatearTelefono(this);
     });
     
-    // Formateo de RUN
+    // Formateo de RUN mejorado
     const runInput = document.getElementById('run');
     
     function formatearRun(input) {
-        let value = input.value.replace(/[^0-9kK]/g, '');
-        if (value.length > 1) {
-            // Extraer cuerpo y dígito verificador
-            const cuerpo = value.slice(0, -1);
-            const dv = value.slice(-1);
-            
-            // Formatear cuerpo con puntos
-            let cuerpoFormateado = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            
-            // Construir RUN completo
-            value = cuerpoFormateado + '-' + dv;
+        let valor = input.value;
+        
+        // Permitir solo números, puntos, guiones y K
+        valor = valor.replace(/[^0-9.\-kK]/g, '');
+        
+        // Si tiene suficientes caracteres, intentar formatear
+        if (valor.length >= 8) {
+            try {
+                const runFormateado = ValidadorRun.formatear(valor);
+                input.value = runFormateado;
+            } catch (error) {
+                // Si hay error en el formateo, dejar el valor como está
+                input.value = valor;
+            }
+        } else {
+            input.value = valor;
         }
-        input.value = value;
         
         // Validar RUN en tiempo real
         validarRun();
@@ -262,29 +313,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Validación de RUN
+    // Validación de RUN mejorada
     function validarRun() {
         const run = runInput.value.trim();
         
         if (!run) {
             runInput.setCustomValidity('El RUN es obligatorio');
             return false;
-        } else if (!Fn.validaRut(run)) {
-            runInput.setCustomValidity('El RUN ingresado no es válido');
-            return false;
-        } else {
-            // Verificar si el RUN ya está registrado usando el módulo
-            const todosLosUsuarios = obtenerTodosLosUsuarios();
-            const runExiste = todosLosUsuarios.some(user => user.run === run);
-            
-            if (runExiste) {
-                runInput.setCustomValidity('Este RUN ya está registrado');
-                return false;
-            } else {
-                runInput.setCustomValidity('');
-                return true;
-            }
         }
+        
+        // Usar el nuevo validador
+        if (!ValidadorRun.validar(run)) {
+            runInput.setCustomValidity('El RUN ingresado no es válido. Formato: 12.345.678-9');
+            return false;
+        }
+        
+        // Verificar si el RUN ya está registrado usando el módulo
+        const todosLosUsuarios = obtenerTodosLosUsuarios();
+        const runLimpio = ValidadorRun.limpiarRun(run);
+        const runExiste = todosLosUsuarios.some(user => {
+            if (user.run) {
+                const runUsuarioLimpio = ValidadorRun.limpiarRun(user.run);
+                return runUsuarioLimpio === runLimpio;
+            }
+            return false;
+        });
+        
+        if (runExiste) {
+            runInput.setCustomValidity('Este RUN ya está registrado');
+            return false;
+        }
+        
+        runInput.setCustomValidity('');
+        return true;
     }
     
     // Validación de tipo de usuario
@@ -508,13 +569,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
             
+            console.log('📝 Datos del formulario capturados:', userData);
+            
             // Limpiar teléfono de caracteres no numéricos para el envío (si existe)
             if (userData.telefono) {
                 userData.telefono = userData.telefono.replace(/\D/g, '');
             }
             
-            // Limpiar RUN para almacenamiento (mantener formato con guión)
-            userData.run = userData.run.trim();
+            // Limpiar RUN para almacenamiento (formato estándar con puntos y guión)
+            userData.run = ValidadorRun.formatear(userData.run.trim());
             
             // Agregar ID único y fecha de registro
             userData.id = Date.now(); // ID único basado en timestamp
@@ -522,6 +585,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // El role se asigna según el tipo de usuario seleccionado
             userData.role = userData.tipoUsuario;
+            
+            console.log('💾 Datos finales a guardar:', userData);
             
             console.log('Datos del usuario validados:', userData);
             
@@ -652,3 +717,44 @@ window.usuariosLocalStorage = {
     listar: listarUsuariosRegistrados,
     limpiar: limpiarUsuariosRegistrados
 };
+
+// Funciones de debugging para RUN
+window.debugRun = {
+    validar: function(run) {
+        console.log(`🔍 Validando RUN: ${run}`);
+        const resultado = ValidadorRun.validar(run);
+        console.log(`✅ Resultado: ${resultado ? 'VÁLIDO' : 'INVÁLIDO'}`);
+        if (resultado) {
+            console.log(`📝 Formato: ${ValidadorRun.formatear(run)}`);
+        }
+        return resultado;
+    },
+    
+    formatear: function(run) {
+        const formateado = ValidadorRun.formatear(run);
+        console.log(`📝 ${run} → ${formateado}`);
+        return formateado;
+    },
+    
+    probarEjemplos: function() {
+        const ejemplos = [
+            '12345678-9',
+            '12.345.678-9',
+            '12345678-K',
+            '1234567-8',
+            '11111111-1',
+            '22222222-2',
+            '12345678-0'
+        ];
+        
+        console.log('🧪 Probando RUNs de ejemplo:');
+        ejemplos.forEach(run => {
+            const valido = ValidadorRun.validar(run);
+            console.log(`${valido ? '✅' : '❌'} ${run} → ${valido ? 'VÁLIDO' : 'INVÁLIDO'}`);
+        });
+    }
+};
+
+console.log('🔧 Sistema de validación de RUN mejorado cargado.');
+console.log('💡 Usa debugRun.validar("tu-run") para probar un RUN específico.');
+console.log('💡 Usa debugRun.probarEjemplos() para ver ejemplos de validación.');
