@@ -65,7 +65,10 @@
         </ul>
       </nav>
 
-      <div class="d-flex">
+      <div
+        class="carrito-container d-flex align-items-center"
+        onclick="window.location.href='carrito.html'"
+      >
         <div>
           <img
             src="../../assets/images/cart-icon.svg"
@@ -102,9 +105,18 @@
             <h3 id="precioDetalleProducto"></h3>
           </header>
           <p id="descripcionDetalleProducto"></p>
-          <div class="d-flex flex-row justify-content-between align-items-baseline">
+          <div
+            class="d-flex flex-row justify-content-between align-items-baseline"
+          >
             <label for="cantidad">Cantidad</label>
-            <input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1" />
+            <input
+              type="number"
+              id="cantidad"
+              name="cantidad"
+              min="1"
+              max="100"
+              value="1"
+            />
           </div>
           <button class="btnAddProductoDetalle">Añadir al carrito</button>
         </article>

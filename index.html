@@ -61,18 +61,19 @@
         </ul>
       </nav>
 
-       <a href="pages/tienda/carrito.html" class="text-decoration-none text-dark">
-        <div class="d-flex align-items-center">
-            <div>
-                <img
-                    src="assets/images/cart-icon.svg"
-                    alt="Logo carrito de compras"
-                    height="25"
-                />
-            </div>
-            <p class="mb-0 ms-2" id="carritoTexto">Carrito</p>
+      <div
+        class="carrito-container d-flex align-items-center"
+        onclick="window.location.href='/pages/tienda/carrito.html'"
+      >
+        <div>
+          <img
+            src="../../assets/images/cart-icon.svg"
+            alt="Logo carrito de compras"
+            height="25"
+          />
         </div>
-    </a>
+        <p id="carritoTexto"></p>
+      </div>
     </header>
 
     <main>
