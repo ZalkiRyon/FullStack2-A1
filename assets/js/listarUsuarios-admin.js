@@ -24,24 +24,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function cargarUsuarios() {
     try {
+        console.log('🔄 Iniciando carga de usuarios...');
         todosLosUsuarios = obtenerTodosLosUsuarios();
         usuariosFiltrados = [...todosLosUsuarios];
         
         console.log(`📊 Usuarios cargados: ${todosLosUsuarios.length}`);
+        console.log('📝 Primer usuario (estructura):', todosLosUsuarios[0] || 'No hay usuarios');
         console.log('Usuarios por rol:', contarUsuariosPorRol());
         
+        // Actualizar contador en la interfaz
         actualizarContadorTotal();
+        
+        if (todosLosUsuarios.length === 0) {
+            console.warn('⚠️ No se cargaron usuarios. Verificar localStorage y usuarios.js');
+        }
+        
     } catch (error) {
-        console.error('❌ Error cargando usuarios:', error);
-        mostrarMensajeError('Error al cargar usuarios');
+        console.error('❌ Error al cargar usuarios:', error);
+        alert('Error al cargar la lista de usuarios: ' + error.message);
     }
 }
 
 function contarUsuariosPorRol() {
-    return todosLosUsuarios.reduce((acc, user) => {
-        acc[user.role] = (acc[user.role] || 0) + 1;
-        return acc;
-    }, {});
+    const conteo = {};
+    todosLosUsuarios.forEach(user => {
+        conteo[user.role] = (conteo[user.role] || 0) + 1;
+    });
+    return conteo;
+}
+
+function actualizarContadorTotal() {
+    const totalElement = document.getElementById('total-users');
+    if (totalElement) {
+        totalElement.textContent = usuariosFiltrados.length;
+    }
 }
 
 function configurarEventListeners() {
@@ -63,6 +79,23 @@ function configurarEventListeners() {
     
     if (btnSiguiente) {
         btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
+    }
+    
+    // Botones de acción
+    const btnMostrar = document.getElementById('show-user-btn');
+    const btnEditar = document.getElementById('edit-user-btn');
+    const btnEliminar = document.getElementById('delete-user-btn');
+    
+    if (btnMostrar) {
+        btnMostrar.addEventListener('click', mostrarUsuarioSeleccionado);
+    }
+    
+    if (btnEditar) {
+        btnEditar.addEventListener('click', editarUsuarioSeleccionado);
+    }
+    
+    if (btnEliminar) {
+        btnEliminar.addEventListener('click', eliminarUsuarioSeleccionado);
     }
 }
 
@@ -90,70 +123,155 @@ function filtrarUsuarios(rolSeleccionado) {
 function renderizarTablaUsuarios() {
     const tbody = document.getElementById('users-tbody');
     if (!tbody) {
-        console.error('❌ No se encontró el tbody de la tabla');
+        console.error('No se encontró el elemento users-tbody');
         return;
     }
     
+    // Limpiar tabla
+    tbody.innerHTML = '';
+    
+    // Calcular usuarios para la página actual
     const inicio = (paginaActual - 1) * usuariosPorPagina;
     const fin = inicio + usuariosPorPagina;
     const usuariosPagina = usuariosFiltrados.slice(inicio, fin);
     
-    if (usuariosPagina.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 40px; color: #6c757d;">
-                    <i style="font-size: 48px; display: block; margin-bottom: 15px;">👥</i>
-                    No se encontraron usuarios
-                </td>
-            </tr>
-        `;
-        actualizarPaginacion();
-        return;
-    }
+    console.log(`📄 Renderizando página ${paginaActual}: ${usuariosPagina.length} usuarios`);
     
-    tbody.innerHTML = usuariosPagina.map(usuario => `
-        <tr class="user-row" data-user-id="${usuario.id}" onclick="seleccionarUsuario(${usuario.id})">
-            <td>
-                <input type="radio" name="userSelection" value="${usuario.id}" class="user-checkbox" 
-                       onchange="seleccionarUsuarioPorCheckbox(${usuario.id})">
-            </td>
-            <td>
-                <strong>${formatearNombreCompleto(usuario)}</strong>
-            </td>
-            <td>${usuario.email}</td>
-            <td>${usuario.run || 'N/A'}</td>
-            <td>
-                <span class="user-role role-${usuario.role}">${formatearRol(usuario.role)}</span>
-            </td>
-            <td>${formatearFecha(usuario.fechaRegistro)}</td>
-            <td>${usuario.telefono || 'N/A'}</td>
-        </tr>
-    `).join('');
+    // Crear filas
+    usuariosPagina.forEach(user => {
+        const fila = crearFilaUsuario(user);
+        tbody.appendChild(fila);
+    });
     
+    // Actualizar paginación
     actualizarPaginacion();
+    
+    // Si no hay usuarios, mostrar mensaje
+    if (usuariosPagina.length === 0) {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td colspan="8" class="text-center" style="padding: 40px;">
+                <div style="color: #6c757d;">
+                    <i style="font-size: 48px;">👥</i>
+                    <p style="margin-top: 15px; font-size: 16px;">No se encontraron usuarios</p>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(fila);
+    }
 }
 
-function formatearNombreCompleto(usuario) {
-    if (usuario.nombre && usuario.apellido) {
-        return `${usuario.nombre} ${usuario.apellido}`;
+function crearFilaUsuario(user) {
+    const fila = document.createElement('tr');
+    fila.className = 'user-row';
+    fila.dataset.userId = user.id;
+    
+    // Formatear datos
+    const nombreCompleto = formatearNombreCompleto(user);
+    const rolFormateado = formatearRol(user.role);
+    const fechaFormateada = formatearFecha(user.fechaRegistro);
+    
+    fila.innerHTML = `
+        <td>
+            <input type="checkbox" class="user-checkbox" value="${user.id}">
+        </td>
+        <td class="user-name">${nombreCompleto}</td>
+        <td class="user-email">${user.email}</td>
+        <td class="user-run">${user.run || 'N/A'}</td>
+        <td class="user-phone">${user.telefono || 'N/A'}</td>
+        <td>
+            <span class="role-badge role-${user.role}">${rolFormateado}</span>
+        </td>
+        <td class="user-date">${fechaFormateada}</td>
+        <td class="user-actions">
+            <button class="btn-view-user" onclick="verDetallesUsuario(${user.id})" title="Ver detalles">
+                👁️
+            </button>
+        </td>
+    `;
+    
+    // Event listener para selección
+    fila.addEventListener('click', function(e) {
+        // No seleccionar si se hizo clic en checkbox o botón
+        if (e.target.type === 'checkbox' || e.target.tagName === 'BUTTON') {
+            return;
+        }
+        
+        seleccionarUsuario(user);
+    });
+    
+    // Event listener para checkbox
+    const checkbox = fila.querySelector('.user-checkbox');
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            seleccionarUsuario(user);
+        } else {
+            usuarioSeleccionado = null;
+            actualizarBotonesAccion();
+            cerrarDetallesUsuario();
+        }
+    });
+    
+    return fila;
+}
+
+function seleccionarUsuario(user) {
+    console.log('👤 Usuario seleccionado:', user);
+    console.log('📧 Email del usuario:', user.email);
+    console.log('🆔 ID del usuario:', user.id);
+    
+    // Actualizar selección global
+    usuarioSeleccionado = user;
+    
+    // Actualizar interfaz visual
+    document.querySelectorAll('.user-row').forEach(row => {
+        row.classList.remove('selected');
+    });
+    
+    document.querySelectorAll('.user-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Marcar fila actual como seleccionada
+    const filaActual = document.querySelector(`[data-user-id="${user.id}"]`);
+    if (filaActual) {
+        filaActual.classList.add('selected');
+        const checkbox = filaActual.querySelector('.user-checkbox');
+        if (checkbox) {
+            checkbox.checked = true;
+        }
     }
-    return usuario.nombre || usuario.email.split('@')[0];
+    
+    // Actualizar botones de acción
+    actualizarBotonesAccion();
+    
+    // Mostrar detalles del usuario
+    mostrarDetallesUsuario(user);
+}
+
+function formatearNombreCompleto(user) {
+    if (!user) {
+        return 'Usuario desconocido';
+    }
+    const nombre = user.nombre || '';
+    const apellido = user.apellido || '';
+    return `${nombre} ${apellido}`.trim() || 'Sin nombre';
 }
 
 function formatearRol(role) {
     const roles = {
         'admin': 'Administrador',
-        'cliente': 'Cliente',
+        'cliente': 'Cliente', 
         'vendedor': 'Vendedor'
     };
     return roles[role] || role;
 }
 
-function formatearFecha(fechaISO) {
-    if (!fechaISO) return 'N/A';
+function formatearFecha(fechaString) {
+    if (!fechaString) return 'N/A';
     
     try {
-        const fecha = new Date(fechaISO);
+        const fecha = new Date(fechaString);
         return fecha.toLocaleDateString('es-CL', {
             year: 'numeric',
             month: '2-digit',
@@ -164,38 +282,21 @@ function formatearFecha(fechaISO) {
     }
 }
 
-function seleccionarUsuario(userId) {
-    // Remover selección anterior
-    document.querySelectorAll('.user-row').forEach(row => {
-        row.classList.remove('selected');
-    });
+function cambiarPagina(nuevaPagina) {
+    const totalPaginas = Math.ceil(usuariosFiltrados.length / usuariosPorPagina);
     
-    // Agregar selección al usuario clickeado
-    const fila = document.querySelector(`[data-user-id="${userId}"]`);
-    if (fila) {
-        fila.classList.add('selected');
-        
-        // Marcar el radio button correspondiente
-        const radio = fila.querySelector('.user-checkbox');
-        if (radio) {
-            radio.checked = true;
-        }
+    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) {
+        return;
     }
     
-    // Guardar usuario seleccionado
-    usuarioSeleccionado = usuariosFiltrados.find(user => user.id == userId);
+    paginaActual = nuevaPagina;
+    usuarioSeleccionado = null;
     
-    // Actualizar botones de acción
+    renderizarTablaUsuarios();
     actualizarBotonesAccion();
+    cerrarDetallesUsuario();
     
-    // Mostrar detalles del usuario
-    mostrarDetallesUsuario(usuarioSeleccionado);
-    
-    console.log('👤 Usuario seleccionado:', usuarioSeleccionado);
-}
-
-function seleccionarUsuarioPorCheckbox(userId) {
-    seleccionarUsuario(userId);
+    console.log(`📄 Cambiado a página: ${paginaActual}/${totalPaginas}`);
 }
 
 function mostrarDetallesUsuario(usuario) {
@@ -279,10 +380,15 @@ function formatearComuna(comunaKey) {
 window.cerrarDetallesUsuario = cerrarDetallesUsuario;
 
 function actualizarBotonesAccion() {
+    const btnMostrar = document.getElementById('show-user-btn');
     const btnEditar = document.getElementById('edit-user-btn');
     const btnEliminar = document.getElementById('delete-user-btn');
     
     const haySeleccion = usuarioSeleccionado !== null;
+    
+    if (btnMostrar) {
+        btnMostrar.disabled = !haySeleccion;
+    }
     
     if (btnEditar) {
         btnEditar.disabled = !haySeleccion;
@@ -291,6 +397,105 @@ function actualizarBotonesAccion() {
     if (btnEliminar) {
         btnEliminar.disabled = !haySeleccion;
     }
+}
+
+function eliminarUsuarioSeleccionado() {
+    if (!usuarioSeleccionado) {
+        alert('Por favor, selecciona un usuario para eliminar.');
+        return;
+    }
+    
+    // Verificar si es un usuario del sistema (admin predefinido)
+    const esUsuarioSistema = usuarioSeleccionado.id <= 10; // Los primeros 10 son usuarios predefinidos
+    
+    if (esUsuarioSistema) {
+        alert('No se pueden eliminar los usuarios del sistema (administradores, clientes y vendedores predefinidos).');
+        return;
+    }
+    
+    // Confirmar eliminación
+    const confirmacion = confirm(`¿Estás seguro de que deseas eliminar al usuario "${formatearNombreCompleto(usuarioSeleccionado)}"?\n\nEsta acción no se puede deshacer.`);
+    
+    if (!confirmacion) {
+        return;
+    }
+    
+    try {
+        // Obtener usuarios de localStorage
+        const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+        
+        // Buscar el usuario a eliminar por email (más confiable que por ID)
+        const indiceUsuario = usuariosRegistrados.findIndex(user => user.correo === usuarioSeleccionado.email);
+        
+        if (indiceUsuario === -1) {
+            alert('Usuario no encontrado en localStorage. Puede que ya haya sido eliminado.');
+            return;
+        }
+        
+        // Eliminar usuario del array
+        usuariosRegistrados.splice(indiceUsuario, 1);
+        
+        // Guardar cambios en localStorage
+        localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
+        
+        console.log(`🗑️ Usuario eliminado: ${usuarioSeleccionado.email}`);
+        console.log(`📊 Usuarios restantes en localStorage: ${usuariosRegistrados.length}`);
+        
+        // Guardar el nombre del usuario antes de cerrar detalles
+        const nombreUsuarioEliminado = formatearNombreCompleto(usuarioSeleccionado);
+        
+        // Actualizar la interfaz
+        cargarUsuarios();
+        renderizarTablaUsuarios();
+        cerrarDetallesUsuario(); // Cerrar panel de detalles
+        
+        alert(`Usuario "${nombreUsuarioEliminado}" eliminado correctamente.`);
+        
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        alert('Error al eliminar el usuario. Por favor, inténtalo de nuevo.');
+    }
+}
+
+function mostrarUsuarioSeleccionado() {
+    if (!usuarioSeleccionado) {
+        alert('Por favor, selecciona un usuario para mostrar.');
+        return;
+    }
+    
+    // Redirigir a página de edición en modo mostrar
+    const url = `editarUsuario.html?email=${encodeURIComponent(usuarioSeleccionado.email)}&modo=mostrar`;
+    window.location.href = url;
+}
+
+function editarUsuarioSeleccionado() {
+    console.log('🔧 Intentando editar usuario...');
+    console.log('Usuario seleccionado:', usuarioSeleccionado);
+    
+    if (!usuarioSeleccionado) {
+        alert('Por favor, selecciona un usuario para editar.');
+        return;
+    }
+    
+    console.log('Email del usuario:', usuarioSeleccionado.email);
+    
+    // Verificar si es un usuario del sistema (solo se pueden editar usuarios de localStorage)
+    const esUsuarioSistema = usuarioSeleccionado.id <= 10;
+    
+    if (esUsuarioSistema) {
+        console.log('Usuario del sistema detectado, redirigiendo a modo solo lectura');
+        // Redirigir en modo solo lectura
+        const url = `editarUsuario.html?email=${encodeURIComponent(usuarioSeleccionado.email)}&modo=mostrar`;
+        console.log('URL de redirección:', url);
+        window.location.href = url;
+        return;
+    }
+    
+    console.log('Usuario de localStorage detectado, redirigiendo a modo edición');
+    // Redirigir a página de edición en modo editar
+    const url = `editarUsuario.html?email=${encodeURIComponent(usuarioSeleccionado.email)}&modo=editar`;
+    console.log('URL de redirección:', url);
+    window.location.href = url;
 }
 
 function actualizarPaginacion() {
@@ -345,106 +550,6 @@ function generarNumerosPagina(totalPaginas) {
     }
 }
 
-function cambiarPagina(nuevaPagina) {
-    const totalPaginas = Math.ceil(usuariosFiltrados.length / usuariosPorPagina);
-    
-    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) {
-        return;
-    }
-    
-    paginaActual = nuevaPagina;
-    usuarioSeleccionado = null; // Limpiar selección al cambiar de página
-    
-    renderizarTablaUsuarios();
-    actualizarBotonesAccion();
-    
-    console.log(`📄 Página cambiada a: ${paginaActual}`);
-}
-
-function actualizarContadorTotal() {
-    const totalElement = document.getElementById('total-users');
-    if (totalElement) {
-        totalElement.textContent = usuariosFiltrados.length;
-    }
-}
-
-function mostrarMensajeError(mensaje) {
-    const tbody = document.getElementById('users-tbody');
-    if (tbody) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 40px; color: #e74c3c;">
-                    <i style="font-size: 48px; display: block; margin-bottom: 15px;">⚠️</i>
-                    ${mensaje}
-                </td>
-            </tr>
-        `;
-    }
-}
-
-// Funciones globales para los botones de acción
-window.editarUsuarioSeleccionado = function() {
-    if (!usuarioSeleccionado) {
-        alert('Por favor, selecciona un usuario para editar.');
-        return;
-    }
-    
-    console.log('✏️ Editando usuario:', usuarioSeleccionado);
-    
-    // Guardar el usuario a editar en sessionStorage para la página de edición
-    sessionStorage.setItem('usuarioAEditar', JSON.stringify(usuarioSeleccionado));
-    
-    // Redirigir a la página de edición (cuando la creemos)
-    window.location.href = 'editarUsuario.html';
-};
-
-window.eliminarUsuarioSeleccionado = function() {
-    if (!usuarioSeleccionado) {
-        alert('Por favor, selecciona un usuario para eliminar.');
-        return;
-    }
-    
-    // No permitir eliminar administradores predefinidos
-    if (usuarioSeleccionado.email === 'admin' && usuarioSeleccionado.role === 'admin') {
-        alert('No se puede eliminar el usuario administrador principal.');
-        return;
-    }
-    
-    const confirmacion = confirm(`¿Estás seguro de que quieres eliminar al usuario "${formatearNombreCompleto(usuarioSeleccionado)}"?\n\nEsta acción no se puede deshacer.`);
-    
-    if (confirmacion) {
-        try {
-            // Eliminar de localStorage
-            const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-            const usuariosActualizados = usuariosRegistrados.filter(user => user.id !== usuarioSeleccionado.id);
-            localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosActualizados));
-            
-            console.log('🗑️ Usuario eliminado:', usuarioSeleccionado);
-            
-            // Recargar datos
-            cargarUsuarios();
-            renderizarTablaUsuarios();
-            usuarioSeleccionado = null;
-            actualizarBotonesAccion();
-            
-            alert('Usuario eliminado exitosamente.');
-            
-        } catch (error) {
-            console.error('❌ Error eliminando usuario:', error);
-            alert('Error al eliminar el usuario. Intenta nuevamente.');
-        }
-    }
-};
-
-// Función de utilidad para debugging
-window.debugUsuarios = {
-    verTodos: () => todosLosUsuarios,
-    verFiltrados: () => usuariosFiltrados,
-    verSeleccionado: () => usuarioSeleccionado,
-    recargar: () => {
-        cargarUsuarios();
-        renderizarTablaUsuarios();
-    }
-};
-
-console.log('🔧 Sistema de gestión de usuarios cargado. Usa debugUsuarios.verTodos() para debugging.');
+// Hacer funciones globales para llamadas desde HTML
+window.mostrarUsuarioSeleccionado = mostrarUsuarioSeleccionado;
+window.editarUsuarioSeleccionado = editarUsuarioSeleccionado;

@@ -44,7 +44,7 @@ export const usuarios = [
     direccion: "Av. O'Higgins 2456, Depto 34B",
     comentario: "Administrador de contenido y gestión académica",
     fechaRegistro: "2024-01-25T14:15:00.000Z"
-  },
+  }, 
 
   // CLIENTES
   {
