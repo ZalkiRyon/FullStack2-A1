@@ -4,6 +4,8 @@
 // 3. Funcion para obtener los datos
 // 4. Funciones para renderizar los productos en el DOM
 
+import { handleClickAgregarCarrito } from "./carrito.js";
+
 const listaProductos = [
   {
     id: 1,
@@ -104,19 +106,33 @@ export function initializerListaProductos() {
   }
   console.log("Productos inicializados en localStorage");
 
-  renderizarProductos();
+  const ruta = window.location.pathname.split("/").pop();
+
+  if (ruta === "" || ruta === "index.html") {
+    renderProductosPagPrincipal();
+  }
+  if (ruta === "productos.html") {
+    renderProductos();
+  }
+  if (ruta === "detalleProducto.html") {
+    renderDetalleProducto();
+  }
 }
 
-function renderizarProductos() {
+
+
+function renderProductosPagPrincipal() {
   // Renderizado pag principal
   const containerPagPrincipal = document.querySelector(".seccion-productos");
 
+  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+
   if (!containerPagPrincipal) {
-    console.error(`No se encontró el contenedor con clase: ${containerPagPrincipal}`);
+    console.error(
+      `No se encontró el contenedor con clase: ${containerPagPrincipal}`
+    );
     return;
   }
-
-  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
 
   const primerosTresProductos = productos.slice(0, 3);
 
@@ -136,26 +152,94 @@ function renderizarProductos() {
     `
     )
     .join("");
+}
 
+function renderProductos() {
   // Renderizado Pag Producto
   const containerPagProducto = document.querySelector(
     ".sectionTodosLosProductos"
   );
 
+  if (!containerPagProducto) {
+    console.error(
+      `No se encontró el contenedor con clase: ${containerPagProducto}`
+    );
+    return;
+  }
+
+  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+
   containerPagProducto.innerHTML = productos
     .map(
-      (producto) => `
-        <article class="cartaProducto">
-          <div class="imgCartaProducto">
-            <img src="${producto.imagen}" alt="Producto ${producto.nombre}" />
+      (producto) =>
+        `
+        <article class="cardProductos" data-producto-id="${producto.id}">
+          <div class="containerImgProductos">
+            <img src="../../${producto.imagen}" alt="Imagen Producto ${
+          producto.nombre
+        }" class="imgProductos" />
           </div>
-          <a href="">${producto.nombre}</a>
-          <div class="contenidoCartaProducto">
-            <p>${producto.categoria}</p>
-            <p>$${producto.precio.toLocaleString()}</p>
-          </div>
+          <h6>${producto.nombre}</h6>
+          <span>$${producto.precio.toLocaleString()}</span>
+          <button class="btnAddProductos" id="${producto.id}" >Añadir</button>
         </article>
     `
     )
     .join("");
+  setupEvent();
 }
+
+function setupEvent() {
+  // Identificar donde estaremos ubicados
+  const container = document.querySelector(".sectionTodosLosProductos");
+
+  container.addEventListener("click", (event) => {
+    const target = event.target;
+
+    // Solo para el evento de ver detalle
+    // Buscamos el target mas cercano al la carta del producto
+    const card = target.closest(".cardProductos");
+
+    if (card && !target.matches(".btnAddProductos")) {
+      handleClickDetalle(card);
+    }
+
+    // Llamo una funcion que viene desde carrito para entregarle el id del producto que seleccione
+    if (target.matches(".btnAddProductos")) {
+      handleClickAgregarCarrito(target);
+      return;
+    }
+  });
+}
+
+function handleClickDetalle(cardElement) {
+  const productoId = cardElement.getAttribute("data-producto-id");
+  redirectDetalleProducto(productoId);
+}
+
+function redirectDetalleProducto(productoId) {
+  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const producto = productos.find((p) => p.id == productoId);
+
+  if (producto) {
+    localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+    window.location.href = "/pages/tienda/detalleProducto.html";
+  }
+}
+
+function renderDetalleProducto() {
+  const producto =
+    JSON.parse(localStorage.getItem("productoSeleccionado")) || [];
+  document.getElementById("nombreDetalleProducto").textContent =
+    producto.nombre;
+  document.getElementById("barraNombreDetalleProducto").textContent =
+    producto.nombre;
+  document.getElementById(
+    "precioDetalleProducto"
+  ).textContent = `$${producto.precio.toLocaleString()}`;
+  document.getElementById("descripcionDetalleProducto").textContent =
+    producto.descripcion;
+  document.getElementById("imgDetalleProducto").src = "/" + producto.imagen;
+  document.getElementById("imgDetalleProducto").alt = producto.nombre;
+}
+

@@ -61,18 +61,19 @@
         </ul>
       </nav>
 
-       <a href="pages/tienda/carrito.html" class="text-decoration-none text-dark">
-        <div class="d-flex align-items-center">
-            <div>
-                <img
-                    src="assets/images/cart-icon.svg"
-                    alt="Logo carrito de compras"
-                    height="25"
-                />
-            </div>
-            <p class="mb-0 ms-2">Carrito</p>
+      <div
+        class="carrito-container d-flex align-items-center"
+        onclick="window.location.href='/pages/tienda/carrito.html'"
+      >
+        <div>
+          <img
+            src="../../assets/images/cart-icon.svg"
+            alt="Logo carrito de compras"
+            height="25"
+          />
         </div>
-    </a>
+        <p id="carritoTexto"></p>
+      </div>
     </header>
 
     <main>
@@ -121,10 +122,7 @@
       </section>
 
       <section class="seccion-productos">
-        <!-- renderizado de productos -->
-
-      
-
+        <!-- Aqui se renderizan solo los primeros 3 productos -->
       </section>
     </main>
 
@@ -135,13 +133,24 @@
           <nav class="nav-footer">
             <ul class="nav justify-content-end">
               <li class="nav-item">
-                <a class="nav-link" href="">Categoria X</a>
+                <a class="nav-link" href="pages/tienda/productos.html"
+                  >Frutas frescas</a
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Categoria Y</a>
+                <a class="nav-link" href="pages/tienda/productos.html"
+                  >Verduras organicas</a
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Categoria Z</a>
+                <a class="nav-link" href="pages/tienda/productos.html"
+                  >Productos organicos</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="pages/tienda/productos.html"
+                  >Productos lacteos</a
+                >
               </li>
             </ul>
           </nav>

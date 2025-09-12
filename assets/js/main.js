@@ -4,19 +4,17 @@
 
 // IMPORTAR MODULOS
 import { initializerListaProductos } from "./modules/productos.js";
+import { initializerCarrito } from "./modules/carrito.js";
 
 // Función principal de inicialización
 function initializerApp() {
   console.log("Inicializando aplicación Huerto Hogar...");
 
-
-  if ( window.location.pathname === "producto"){
-    initializerListaProductos();
-  }
   // Inicializar módulos
-
+  initializerListaProductos();
+  initializerCarrito();
 }
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", initializerApp);
-console.log()
+

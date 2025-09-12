@@ -65,7 +65,10 @@
         </ul>
       </nav>
 
-      <div class="d-flex">
+      <div
+        class="carrito-container d-flex align-items-center"
+        onclick="window.location.href='carrito.html'"
+      >
         <div>
           <img
             src="../../assets/images/cart-icon.svg"
@@ -73,7 +76,7 @@
             height="25"
           />
         </div>
-        <p>Carrito</p>
+        <p id="carritoTexto"></p>
       </div>
     </header>
 
@@ -82,7 +85,11 @@
 
       <article>
         <div class="containerImgNosotros">
-          <img alt="Imagen Huerto Hogar" src="../../assets/images/quienes-somos.jpg" class="imgNosotros" />
+          <img
+            alt="Imagen Huerto Hogar"
+            src="../../assets/images/quienes-somos.jpg"
+            class="imgNosotros"
+          />
         </div>
         <div>
           <h3>¿Quienes somos?</h3>
@@ -113,13 +120,21 @@
           </p>
         </div>
         <div class="containerImgNosotros">
-          <img alt="Imagen nuestra mision"  class="imgNosotros" src="../../assets/images/mision.jpg"/>
+          <img
+            alt="Imagen nuestra mision"
+            class="imgNosotros"
+            src="../../assets/images/mision.jpg"
+          />
         </div>
       </article>
 
       <article>
         <div class="containerImgNosotros">
-          <img alt="Imagen nuestra vision"  class="imgNosotros" src="../../assets/images/vision.jpg"/>
+          <img
+            alt="Imagen nuestra vision"
+            class="imgNosotros"
+            src="../../assets/images/vision.jpg"
+          />
         </div>
         <div>
           <h3>Nuestra visión</h3>
@@ -136,5 +151,6 @@
       </article>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/main.js" type="module"></script>
   </body>
 </html>
