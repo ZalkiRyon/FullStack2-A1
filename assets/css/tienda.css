@@ -197,6 +197,14 @@ footer {
   padding: 20px 60px;
   margin-top: 20px;
   width: fit-content;
+  min-width: 500px;
+  max-width: 800px;
+}
+
+/* Formulario de registro más amplio */
+.sectionRegistro {
+  min-width: 600px;
+  padding: 30px 40px;
 }
 
 .formRegistro,

@@ -85,9 +85,11 @@
     <main class="mainRegistro">
       <section class="sectionRegistro">
         <h3>Registro de Usuario</h3>
-        <form class="formRegistro" action="#" method="POST">
+        <form class="formRegistro" id="registroTiendaForm" action="#" method="POST">
+          
+          <!-- Nombre -->
           <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre completo:</label>
+            <label for="nombre" class="form-label">NOMBRE</label>
             <input
               type="text"
               class="form-control"
@@ -96,83 +98,130 @@
               required
             />
           </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo:</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo:</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo:</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Contraseña:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label"
-              >Confirmar contraseña:</label
-            >
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-            />
-          </div>
-          <div class="mb-5">
-            <label for="password" class="form-label">Telefono:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-            />
-          </div>
-          <div class="mb-5">
-            <select name="region" id="region-select">
-              <option value="region">--Seleccione la region--</option>
-            </select>
 
-            <select name="comuna" id="comuna-select">
-              <option value="comuna">--Seleccione la comuna--</option>
-            </select>
+          <!-- Apellido -->
+          <div class="mb-3">
+            <label for="apellido" class="form-label">APELLIDO</label>
+            <input
+              type="text"
+              class="form-control"
+              id="apellido"
+              name="apellido"
+              required
+            />
           </div>
 
-          <input type="submit" class="btnRegistrar center" value="REGISTRAR" />
+          <!-- RUN -->
+          <div class="mb-3">
+            <label for="run" class="form-label">RUN</label>
+            <input
+              type="text"
+              class="form-control"
+              id="run"
+              name="run"
+              placeholder="Ej: 12.345.678-9"
+              required
+            />
+          </div>
+
+          <!-- Fecha de Nacimiento (opcional) -->
+          <div class="mb-3">
+            <label for="fechaNacimiento" class="form-label">FECHA DE NACIMIENTO (opcional)</label>
+            <input
+              type="date"
+              class="form-control"
+              id="fechaNacimiento"
+              name="fechaNacimiento"
+            />
+          </div>
+
+          <!-- Correo -->
+          <div class="mb-3">
+            <label for="correo" class="form-label">CORREO</label>
+            <input
+              type="email"
+              class="form-control"
+              id="correo"
+              name="correo"
+              placeholder="Solo correos con @duoc.cl, @profesor.duoc.cl y @gmail.com"
+              required
+            />
+          </div>
+
+          <!-- Telefono (opcional) -->
+          <div class="mb-3">
+            <label for="telefono" class="form-label">TELEFONO (opcional)</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="telefono"
+              name="telefono"
+              placeholder="Solo números, máximo 10 dígitos"
+            />
+          </div>
+
+          <!-- Contraseña -->
+          <div class="mb-3">
+            <label for="contrasena" class="form-label">CONTRASEÑA</label>
+            <input
+              type="password"
+              class="form-control"
+              id="contrasena"
+              name="contrasena"
+              placeholder="Entre 4 a 10 caracteres"
+              required
+            />
+          </div>
+
+          <!-- Confirmar Contraseña -->
+          <div class="mb-3">
+            <label for="confirmarContrasena" class="form-label">CONFIRMAR CONTRASEÑA</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirmarContrasena"
+              name="confirmarContrasena"
+              required
+            />
+          </div>
+
+          <!-- Región y Comuna -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="direccionRegion" class="form-label">REGIÓN</label>
+              <select class="form-control" id="direccionRegion" name="direccionRegion" required>
+                <option value="">Seleccionar región...</option>
+                <!-- Las regiones se cargarán dinámicamente desde JS -->
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="direccionComuna" class="form-label">COMUNA</label>
+              <select class="form-control" id="direccionComuna" name="direccionComuna" required>
+                <option value="">Seleccionar comuna...</option>
+                <!-- Las comunas se cargarán dinámicamente según la región seleccionada -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="mb-5">
+            <label for="direccion" class="form-label">DIRECCIÓN</label>
+            <input
+              type="text"
+              class="form-control"
+              id="direccion"
+              name="direccion"
+              placeholder="Ej: Av. Providencia 1234, Depto 56"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btnRegistrar">REGISTRAR</button>
         </form>
       </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/main.js" type="module"></script>
+    <!-- Script para registro de clientes desde tienda -->
+    <script type="module" src="../../assets/js/registroTienda.js"></script>
   </body>
 </html>
