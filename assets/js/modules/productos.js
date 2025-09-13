@@ -125,7 +125,10 @@ function renderProductosPagPrincipal() {
   // Renderizado pag principal
   const containerPagPrincipal = document.querySelector(".seccion-productos");
 
-  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  // Obtener productos base y personalizados
+  const productosBase = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados = JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  const productos = [...productosBase, ...productosPersonalizados];
 
   if (!containerPagPrincipal) {
     console.error(
@@ -138,10 +141,18 @@ function renderProductosPagPrincipal() {
 
   containerPagPrincipal.innerHTML = primerosTresProductos
     .map(
-      (producto) => `
+      (producto) => {
+        // Determinar la fuente de la imagen
+        const imagenSrc = producto.imagenCustom 
+          ? producto.imagenCustom 
+          : producto.imagen 
+            ? `assets/images/${producto.imagen}` 
+            : 'assets/images/icono.png';
+            
+        return `
         <article class="cartaProducto">
           <div class="imgCartaProducto">
-            <img src="assets/images/${producto.imagen}" alt="Producto ${producto.nombre}" />
+            <img src="${imagenSrc}" alt="Producto ${producto.nombre}" onerror="this.src='assets/images/icono.png'" />
           </div>
           <a href="">${producto.nombre}</a>
           <div class="contenidoCartaProducto">
@@ -149,7 +160,8 @@ function renderProductosPagPrincipal() {
             <p>$${producto.precio.toLocaleString()}</p>
           </div>
         </article>
-    `
+        `;
+      }
     )
     .join("");
 }
@@ -167,23 +179,32 @@ function renderProductos() {
     return;
   }
 
-  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  // Obtener productos base y personalizados
+  const productosBase = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados = JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  const productos = [...productosBase, ...productosPersonalizados];
 
   containerPagProducto.innerHTML = productos
     .map(
-      (producto) =>
-        `
+      (producto) => {
+        // Determinar la fuente de la imagen
+        const imagenSrc = producto.imagenCustom 
+          ? producto.imagenCustom 
+          : producto.imagen 
+            ? `../../assets/images/${producto.imagen}` 
+            : '../../assets/images/icono.png';
+            
+        return `
         <article class="cardProductos" data-producto-id="${producto.id}">
           <div class="containerImgProductos">
-            <img src="../../assets/images/${producto.imagen}" alt="Imagen Producto ${
-          producto.nombre
-        }" class="imgProductos" />
+            <img src="${imagenSrc}" alt="Imagen Producto ${producto.nombre}" class="imgProductos" onerror="this.src='../../assets/images/icono.png'" />
           </div>
           <h6>${producto.nombre}</h6>
           <span>$${producto.precio.toLocaleString()}</span>
           <button class="btnAddProductos" id="${producto.id}" >Añadir</button>
         </article>
-    `
+        `;
+      }
     )
     .join("");
   setupEvent();
@@ -218,7 +239,11 @@ function handleClickDetalle(cardElement) {
 }
 
 function redirectDetalleProducto(productoId) {
-  const productos = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  // Obtener productos base y personalizados
+  const productosBase = JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados = JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  const productos = [...productosBase, ...productosPersonalizados];
+  
   const producto = productos.find((p) => p.id == productoId);
 
   if (producto) {
@@ -239,7 +264,17 @@ function renderDetalleProducto() {
   ).textContent = `$${producto.precio.toLocaleString()}`;
   document.getElementById("descripcionDetalleProducto").textContent =
     producto.descripcion;
-  document.getElementById("imgDetalleProducto").src = "../../assets/images/" + producto.imagen;
-  document.getElementById("imgDetalleProducto").alt = producto.nombre;
+    
+  // Manejar imagen personalizada o predefinida
+  const imagenElement = document.getElementById("imgDetalleProducto");
+  if (producto.imagenCustom) {
+    imagenElement.src = producto.imagenCustom;
+  } else if (producto.imagen) {
+    imagenElement.src = "../../assets/images/" + producto.imagen;
+  } else {
+    imagenElement.src = "../../assets/images/icono.png";
+  }
+  imagenElement.alt = producto.nombre;
+  imagenElement.onerror = function() { this.src = "../../assets/images/icono.png"; };
 }
 

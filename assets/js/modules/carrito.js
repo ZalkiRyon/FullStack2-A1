@@ -23,6 +23,9 @@ function agregarProductoAlCarrito(productoId, cantidad = 1) {
   const carrito = JSON.parse(localStorage.getItem("Carrito")) || [];
   const listaProductos =
     JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados = 
+    JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  
   // El productoId llega como String y los id son Number asi que se castea
   const productoExistenteCarrito = carrito.find(
     (item) => item.id === productoId
@@ -33,16 +36,30 @@ function agregarProductoAlCarrito(productoId, cantidad = 1) {
     productoExistenteCarrito.cantidad += cantidad;
     alert("Cantidad actualizada");
   } else {
-    const producto = listaProductos.find(
+    // Buscar el producto en ambas listas
+    let producto = listaProductos.find(
       (produc) => produc.id === productoId
     );
+    
+    // Si no se encuentra en productos base, buscar en productos personalizados
+    if (!producto) {
+      producto = productosPersonalizados.find(
+        (produc) => produc.id === productoId
+      );
+    }
+
+    // Verificar que el producto existe
+    if (!producto) {
+      alert("Producto no encontrado");
+      return;
+    }
 
     // Nuestro item que se ira directo al carrito
     const productoAgregar = {
       id: producto.id,
       nombre: producto.nombre,
       precio: producto.precio,
-      imagen: producto.imagen,
+      imagen: producto.imagenCustom || producto.imagen, // Usar imagen personalizada si existe
       categoria: producto.categoria,
       descripcion: producto.descripcion,
       stock: producto.stock,
@@ -107,11 +124,17 @@ function renderPagCarrito() {
     totalCarrito.innerHTML = `$ ${total}`;
     containerCarrito.innerHTML = carrito
       .map(
-        (item) => `
+        (item) => {
+          // Determinar la ruta de la imagen
+          const imagenSrc = item.imagen.startsWith('data:') 
+            ? item.imagen 
+            : `../../assets/images/${item.imagen}`;
+          
+          return `
         <article class="productoCarrito" data-carrito-id="${item.id}">
             <div class="containerImgProductoCarrito">
               <img
-                src="../../assets/images/${item.imagen}"
+                src="${imagenSrc}"
                 alt="Producto"
                 class="imgProductoCarrito"
               />
@@ -137,7 +160,8 @@ function renderPagCarrito() {
                  <button class="btn-sumar">+</button>
               </div>
             </div>
-          </article>`
+          </article>`;
+        }
       )
       .join("");
   }
