@@ -141,7 +141,7 @@ function renderProductosPagPrincipal() {
       (producto) => `
         <article class="cartaProducto">
           <div class="imgCartaProducto">
-            <img src="${producto.imagen}" alt="Producto ${producto.nombre}" />
+            <img src="assets/images/${producto.imagen}" alt="Producto ${producto.nombre}" />
           </div>
           <a href="">${producto.nombre}</a>
           <div class="contenidoCartaProducto">
@@ -175,7 +175,7 @@ function renderProductos() {
         `
         <article class="cardProductos" data-producto-id="${producto.id}">
           <div class="containerImgProductos">
-            <img src="../../${producto.imagen}" alt="Imagen Producto ${
+            <img src="../../assets/images/${producto.imagen}" alt="Imagen Producto ${
           producto.nombre
         }" class="imgProductos" />
           </div>
@@ -223,7 +223,7 @@ function redirectDetalleProducto(productoId) {
 
   if (producto) {
     localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-    window.location.href = "/pages/tienda/detalleProducto.html";
+    window.location.href = "detalleProducto.html";
   }
 }
 
@@ -239,7 +239,7 @@ function renderDetalleProducto() {
   ).textContent = `$${producto.precio.toLocaleString()}`;
   document.getElementById("descripcionDetalleProducto").textContent =
     producto.descripcion;
-  document.getElementById("imgDetalleProducto").src = "/" + producto.imagen;
+  document.getElementById("imgDetalleProducto").src = "../../assets/images/" + producto.imagen;
   document.getElementById("imgDetalleProducto").alt = producto.nombre;
 }
 

@@ -111,7 +111,7 @@ function renderPagCarrito() {
         <article class="productoCarrito" data-carrito-id="${item.id}">
             <div class="containerImgProductoCarrito">
               <img
-                src="../../${item.imagen}"
+                src="../../assets/images/${item.imagen}"
                 alt="Producto"
                 class="imgProductoCarrito"
               />
