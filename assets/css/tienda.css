@@ -389,6 +389,21 @@ footer {
   gap: 20px;
 }
 
+/* Botón vaciar carrito */
+#vaciarCarritoBtn {
+  border: 2px solid #dc3545 !important;
+  color: #dc3545 !important;
+  background-color: transparent !important;
+  transition: all 0.3s ease;
+}
+
+#vaciarCarritoBtn:hover {
+  background-color: #dc3545 !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
 /* Responsividad para tienda */
 @media (max-width: 1200px) {
   .sectionTodosLosProductos {

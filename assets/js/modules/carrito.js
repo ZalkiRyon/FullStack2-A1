@@ -174,6 +174,14 @@ function setupCartEventListeners() {
       }
     });
   }
+
+  // Agregar evento para el botón de vaciar carrito
+  const vaciarCarritoBtn = document.getElementById("vaciarCarritoBtn");
+  if (vaciarCarritoBtn) {
+    vaciarCarritoBtn.addEventListener("click", function() {
+      vaciarCarrito();
+    });
+  }
 }
 
 function disminuirCantidad(id) {
@@ -228,5 +236,24 @@ function aumentarCantidad(id) {
         input.value = carrito[itemIndex].cantidad;
       }
     }
+  }
+}
+
+// Función para vaciar completamente el carrito
+function vaciarCarrito() {
+  // Confirmar antes de vaciar el carrito
+  const confirmacion = confirm("¿Estás seguro de que quieres vaciar todo el carrito?");
+  
+  if (confirmacion) {
+    // Limpiar el carrito en localStorage
+    localStorage.setItem("Carrito", JSON.stringify([]));
+    localStorage.setItem("TotalItemsCarrito", "0");
+    
+    // Actualizar la interfaz
+    renderPagCarrito();
+    renderNavCarrito();
+    
+    // Mostrar mensaje de confirmación
+    alert("El carrito ha sido vaciado exitosamente.");
   }
 }
