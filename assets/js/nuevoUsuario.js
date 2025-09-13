@@ -1,277 +1,32 @@
 // Validación y funcionalidad para el formulario de nuevo usuario
 import { obtenerTodosLosUsuarios } from './modules/usuarios.js';
+import { 
+    ValidadorRun, 
+    validarCorreo, 
+    validarContrasena, 
+    cargarRegiones, 
+    cargarComunas, 
+    configurarEventosFormulario 
+} from './modules/validaciones.js';
 
-// Validación de RUN chileno mejorada
-var ValidadorRun = {
-    // Limpia el RUN eliminando puntos, espacios y convirtiendo a mayúsculas
-    limpiarRun: function(run) {
-        return run.toString().replace(/[.\s-]/g, '').toUpperCase();
-    },
-    
-    // Valida si el RUN tiene formato correcto (solo números y K al final)
-    formatoValido: function(run) {
-        const runLimpio = this.limpiarRun(run);
-        return /^[0-9]{7,8}[0-9K]$/.test(runLimpio);
-    },
-    
-    // Calcula el dígito verificador
-    calcularDV: function(numero) {
-        let suma = 0;
-        let multiplicador = 2;
-        
-        // Recorrer el número de derecha a izquierda
-        for (let i = numero.length - 1; i >= 0; i--) {
-            suma += parseInt(numero[i]) * multiplicador;
-            multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
-        }
-        
-        const resto = suma % 11;
-        const dv = 11 - resto;
-        
-        if (dv === 11) return '0';
-        if (dv === 10) return 'K';
-        return dv.toString();
-    },
-    
-    // Valida el RUN completo
-    validar: function(run) {
-        if (!run || run.length === 0) return false;
-        
-        const runLimpio = this.limpiarRun(run);
-        
-        // Verificar formato básico
-        if (!this.formatoValido(runLimpio)) return false;
-        
-        // Separar número y dígito verificador
-        const numero = runLimpio.slice(0, -1);
-        const dvIngresado = runLimpio.slice(-1);
-        
-        // Calcular dígito verificador esperado
-        const dvCalculado = this.calcularDV(numero);
-        
-        // Comparar
-        return dvIngresado === dvCalculado;
-    },
-    
-    // Formatea el RUN con puntos y guión
-    formatear: function(run) {
-        const runLimpio = this.limpiarRun(run);
-        if (runLimpio.length < 8) return run;
-        
-        const numero = runLimpio.slice(0, -1);
-        const dv = runLimpio.slice(-1);
-        
-        // Agregar puntos cada 3 dígitos desde la derecha
-        let numeroFormateado = numero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        
-        return `${numeroFormateado}-${dv}`;
-    }
-};
-
-// Datos de regiones y comunas
-const regionesComunas = {
-    'region-metropolitana': {
-        nombre: 'Región Metropolitana de Santiago',
-        comunas: [
-            { value: 'santiago', text: 'Santiago' },
-            { value: 'las-condes', text: 'Las Condes' },
-            { value: 'providencia', text: 'Providencia' },
-            { value: 'vitacura', text: 'Vitacura' },
-            { value: 'maipu', text: 'Maipú' },
-            { value: 'nunoa', text: 'Ñuñoa' },
-            { value: 'la-florida', text: 'La Florida' },
-            { value: 'puente-alto', text: 'Puente Alto' },
-            { value: 'la-reina', text: 'La Reina' },
-            { value: 'macul', text: 'Macul' },
-            { value: 'penalolen', text: 'Peñalolén' },
-            { value: 'conchali', text: 'Conchalí' },
-            { value: 'independencia', text: 'Independencia' },
-            { value: 'recoleta', text: 'Recoleta' },
-            { value: 'renca', text: 'Renca' },
-            { value: 'quilicura', text: 'Quilicura' },
-            { value: 'huechuraba', text: 'Huechuraba' },
-            { value: 'cerro-navia', text: 'Cerro Navia' },
-            { value: 'lo-prado', text: 'Lo Prado' },
-            { value: 'quinta-normal', text: 'Quinta Normal' },
-            { value: 'pudahuel', text: 'Pudahuel' },
-            { value: 'cerrillos', text: 'Cerrillos' },
-            { value: 'estacion-central', text: 'Estación Central' },
-            { value: 'pedro-aguirre-cerda', text: 'Pedro Aguirre Cerda' },
-            { value: 'san-miguel', text: 'San Miguel' },
-            { value: 'san-joaquin', text: 'San Joaquín' },
-            { value: 'san-ramon', text: 'San Ramón' },
-            { value: 'la-cisterna', text: 'La Cisterna' },
-            { value: 'lo-espejo', text: 'Lo Espejo' },
-            { value: 'la-granja', text: 'La Granja' },
-            { value: 'san-bernardo', text: 'San Bernardo' },
-            { value: 'calera-de-tango', text: 'Calera de Tango' },
-            { value: 'el-bosque', text: 'El Bosque' },
-            { value: 'la-pintana', text: 'La Pintana' }
-        ]
-    },
-    'region-valparaiso': {
-        nombre: 'Región de Valparaíso',
-        comunas: [
-            { value: 'valparaiso', text: 'Valparaíso' },
-            { value: 'vina-del-mar', text: 'Viña del Mar' },
-            { value: 'quilpue', text: 'Quilpué' },
-            { value: 'villa-alemana', text: 'Villa Alemana' },
-            { value: 'san-antonio', text: 'San Antonio' },
-            { value: 'quillota', text: 'Quillota' },
-            { value: 'los-andes', text: 'Los Andes' }
-        ]
-    },
-    'region-biobio': {
-        nombre: 'Región del Biobío',
-        comunas: [
-            { value: 'concepcion', text: 'Concepción' },
-            { value: 'talcahuano', text: 'Talcahuano' },
-            { value: 'chillan', text: 'Chillán' },
-            { value: 'los-angeles', text: 'Los Ángeles' },
-            { value: 'coronel', text: 'Coronel' },
-            { value: 'san-pedro-de-la-paz', text: 'San Pedro de la Paz' }
-        ]
-    },
-    'region-maule': {
-        nombre: 'Región del Maule',
-        comunas: [
-            { value: 'talca', text: 'Talca' },
-            { value: 'curico', text: 'Curicó' },
-            { value: 'linares', text: 'Linares' },
-            { value: 'molina', text: 'Molina' }
-        ]
-    },
-    'region-ohiggins': {
-        nombre: 'Región de O\'Higgins',
-        comunas: [
-            { value: 'rancagua', text: 'Rancagua' },
-            { value: 'san-fernando', text: 'San Fernando' },
-            { value: 'rengo', text: 'Rengo' },
-            { value: 'machali', text: 'Machalí' }
-        ]
-    },
-    'region-araucania': {
-        nombre: 'Región de La Araucanía',
-        comunas: [
-            { value: 'temuco', text: 'Temuco' },
-            { value: 'angol', text: 'Angol' },
-            { value: 'villarrica', text: 'Villarrica' },
-            { value: 'pucon', text: 'Pucón' }
-        ]
-    }
-};
-
-// Cargar regiones al inicializar
-function cargarRegiones() {
-    const selectRegion = document.getElementById('direccionRegion');
-    const selectComuna = document.getElementById('direccionComuna');
-    
-    // Limpiar opciones existentes (excepto la primera)
-    selectRegion.innerHTML = '<option value="">Seleccionar región...</option>';
-    
-    // Cargar regiones dinámicamente
-    Object.keys(regionesComunas).forEach(regionKey => {
-        const option = document.createElement('option');
-        option.value = regionKey;
-        option.textContent = regionesComunas[regionKey].nombre;
-        selectRegion.appendChild(option);
-    });
-    
-    // Limpiar comunas cuando no hay región seleccionada
-    selectComuna.innerHTML = '<option value="">Seleccionar comuna...</option>';
-    selectComuna.disabled = true;
-}
-
-// Cargar comunas según la región seleccionada
-function cargarComunas(regionKey) {
-    const selectComuna = document.getElementById('direccionComuna');
-    
-    // Limpiar opciones existentes
-    selectComuna.innerHTML = '<option value="">Seleccionar comuna...</option>';
-    
-    if (regionKey && regionesComunas[regionKey]) {
-        // Habilitar el select de comunas
-        selectComuna.disabled = false;
-        
-        // Cargar comunas de la región seleccionada
-        regionesComunas[regionKey].comunas.forEach(comuna => {
-            const option = document.createElement('option');
-            option.value = comuna.value;
-            option.textContent = comuna.text;
-            selectComuna.appendChild(option);
-        });
-    } else {
-        selectComuna.disabled = true;
-    }
-}
-
-// Event listener para cuando cambia la región
+// Event listener para cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', function() {
-    // Cargar regiones al inicializar la página
-    cargarRegiones();
-    
+    // Cargar regiones usando el módulo compartido al inicializar la página
     const regionSelect = document.getElementById('direccionRegion');
+    cargarRegiones(regionSelect);
+    
     const comunaSelect = document.getElementById('direccionComuna');
     const form = document.getElementById('nuevoUsuarioForm');
     
-    // Event listener para cambio de región
-    regionSelect.addEventListener('change', function() {
-        cargarComunas(this.value);
+    // Configurar eventos estándar del formulario usando el módulo compartido
+    configurarEventosFormulario({
+        regionSelectId: 'direccionRegion',
+        comunaSelectId: 'direccionComuna',
+        runInputId: 'run',
+        telefonoInputId: 'telefono'
     });
     
-    // Formateo de teléfono
-    const telefonoInput = document.getElementById('telefono');
-    
-    function formatearTelefono(input) {
-        // Solo permitir números
-        let value = input.value.replace(/\D/g, '');
-        
-        // Limitar a máximo 10 dígitos
-        if (value.length > 10) {
-            value = value.substring(0, 10);
-        }
-        
-        input.value = value;
-        
-        // Validar teléfono en tiempo real
-        validarTelefono();
-    }
-    
-    telefonoInput.addEventListener('input', function() {
-        formatearTelefono(this);
-    });
-    
-    // Formateo de RUN mejorado
-    const runInput = document.getElementById('run');
-    
-    function formatearRun(input) {
-        let valor = input.value;
-        
-        // Permitir solo números, puntos, guiones y K
-        valor = valor.replace(/[^0-9.\-kK]/g, '');
-        
-        // Si tiene suficientes caracteres, intentar formatear
-        if (valor.length >= 8) {
-            try {
-                const runFormateado = ValidadorRun.formatear(valor);
-                input.value = runFormateado;
-            } catch (error) {
-                // Si hay error en el formateo, dejar el valor como está
-                input.value = valor;
-            }
-        } else {
-            input.value = valor;
-        }
-        
-        // Validar RUN en tiempo real
-        validarRun();
-    }
-    
-    runInput.addEventListener('input', function() {
-        formatearRun(this);
-    });
-    
-    // Validaciones de formulario
+    // Obtener elementos del formulario para validaciones específicas
     const nombreInput = document.getElementById('nombre');
     const apellidoInput = document.getElementById('apellido');
     const correoInput = document.getElementById('correo');
@@ -361,10 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Validación de correo
-    function validarCorreo() {
+    // Validación de correo usando módulo compartido
+    function validarCorreoFormulario() {
         const correo = correoInput.value.trim();
-        const dominiosPermitidos = ['@duoc.cl', '@profesor.duoc.cl', '@gmail.com'];
         
         if (!correo) {
             correoInput.setCustomValidity('El correo es obligatorio');
@@ -372,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (correo.length > 100) {
             correoInput.setCustomValidity('El correo no puede tener más de 100 caracteres');
             return false;
-        } else if (!dominiosPermitidos.some(dominio => correo.endsWith(dominio))) {
+        } else if (!validarCorreo(correo)) {
             correoInput.setCustomValidity('Solo se permiten correos con @duoc.cl, @profesor.duoc.cl o @gmail.com');
             return false;
         } else {
@@ -422,14 +176,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Validación de contraseña
-    function validarContrasena() {
+    // Validación de contraseña usando módulo compartido
+    function validarContrasenaFormulario() {
         const contrasena = contrasenaInput.value;
         
         if (!contrasena) {
             contrasenaInput.setCustomValidity('La contraseña es obligatoria');
             return false;
-        } else if (contrasena.length < 4 || contrasena.length > 10) {
+        } else if (!validarContrasena(contrasena)) {
             contrasenaInput.setCustomValidity('La contraseña debe tener entre 4 y 10 caracteres');
             return false;
         } else {
@@ -455,8 +209,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Validación de teléfono opcional
-    function validarTelefono() {
+    // Validación de teléfono usando módulo compartido  
+    function validarTelefonoFormulario() {
         const telefono = telefonoInput.value.trim();
         
         // Si no hay valor, es válido (es opcional)
@@ -465,12 +219,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
         
-        // Si hay valor, validar que sea solo números y máximo 10 dígitos
-        if (!/^\d+$/.test(telefono)) {
-            telefonoInput.setCustomValidity('El teléfono debe contener solo números');
-            return false;
-        } else if (telefono.length > 10) {
-            telefonoInput.setCustomValidity('El teléfono no puede tener más de 10 dígitos');
+        // Usar validación del módulo compartido
+        if (!validarTelefono(telefono)) {
+            telefonoInput.setCustomValidity('El teléfono debe contener solo números y máximo 10 dígitos');
             return false;
         } else {
             telefonoInput.setCustomValidity('');
@@ -512,8 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     tipoUsuarioSelect.addEventListener('change', validarTipoUsuario);
     
-    correoInput.addEventListener('input', validarCorreo);
-    correoInput.addEventListener('blur', validarCorreo);
+    correoInput.addEventListener('input', validarCorreoFormulario);
+    correoInput.addEventListener('blur', validarCorreoFormulario);
     
     direccionInput.addEventListener('input', validarDireccion);
     direccionInput.addEventListener('blur', validarDireccion);
@@ -522,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
     comentarioInput.addEventListener('blur', validarComentario);
     
     contrasenaInput.addEventListener('input', function() {
-        validarContrasena();
+        validarContrasenaFormulario();
         if (confirmarContrasenaInput.value) {
             validarConfirmarContrasena();
         }
@@ -530,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     confirmarContrasenaInput.addEventListener('input', validarConfirmarContrasena);
     
-    telefonoInput.addEventListener('blur', validarTelefono);
+    telefonoInput.addEventListener('blur', validarTelefonoFormulario);
     
     regionSelect.addEventListener('change', validarRegionComuna);
     comunaSelect.addEventListener('change', validarRegionComuna);
@@ -544,10 +295,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const apellidoValido = validarApellido();
         const runValido = validarRun();
         const tipoUsuarioValido = validarTipoUsuario();
-        const correoValido = validarCorreo();
-        const contrasenaValida = validarContrasena();
+        const correoValido = validarCorreoFormulario();
+        const contrasenaValida = validarContrasenaFormulario();
         const confirmarContrasenaValida = validarConfirmarContrasena();
-        const telefonoValido = validarTelefono();
+        const telefonoValido = validarTelefonoFormulario();
         const direccionValida = validarDireccion();
         const comentarioValido = validarComentario();
         const regionComunaValida = validarRegionComuna();
@@ -599,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Restablecer formulario
                 form.reset();
-                cargarRegiones(); // Restablecer dropdowns
+                cargarRegiones(document.getElementById('direccionRegion')); // Restablecer dropdowns
                 
                 // Restablecer botón
                 submitButton.textContent = originalText;
