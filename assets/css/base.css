@@ -1,0 +1,131 @@
+/* ===== BASE.CSS - Estilos base y componentes compartidos ===== */
+
+/* Variables globales para Huerto Hogar */
+:root {
+  --emerald: #2e8b57;
+  --mustard: #ffd700;
+  --light-bg: #f7f7f7;
+  --brown: #8b4513;
+  --primary-text: #333333;
+  --secundary-text: #666666;
+}
+
+/* Reset y configuración base */
+/* Con esto puedo quitar las flechas del input type number */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Tipografías base */
+body {
+  font-family: "Montserrat", sans-serif;
+  color: var(--primary-text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  color: var(--brown);
+}
+
+/* Componentes base de formularios */
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  border-color: var(--emerald);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(46, 139, 87, 0.2);
+}
+
+/* Botones base */
+.btn-primary {
+  background-color: var(--emerald);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #236b47;
+}
+
+/* Componentes base para layouts */
+.container-fluid {
+  width: 100%;
+  padding: 0 15px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Utilidades base */
+.gap-20 {
+  gap: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+/* Links base */
+a {
+  color: var(--emerald);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Contenedores base */
+.content-wrapper {
+  min-height: 100vh;
+}
+
+/* Responsividad base */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 0 10px;
+  }
+  
+  .btn-primary {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}

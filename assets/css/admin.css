@@ -1,16 +1,6 @@
-/* Estilos específicos para el área de administración */
+/* ===== ADMIN.CSS - Estilos específicos para el área de administración ===== */
 
-/* Variables base de Huerto Hogar (copiadas de style.css) */
-:root {
-  --emerald: #2e8b57;
-  --mustard: #ffd700;
-  --light-bg: #f7f7f7;
-  --brown: #8b4513;
-  --primary-text: #333333;
-  --secundary-text: #666666;
-}
-
-/* Variables adicionales para admin */
+/* Variables adicionales para admin (base.css ya tiene las variables principales) */
 :root {
   --admin-sidebar-bg: var(--light-bg);
   --admin-sidebar-border: var(--emerald);
@@ -21,17 +11,13 @@
   --admin-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Reset para el body del admin */
+/* Configuración específica para páginas admin */
 .admin-body {
-  font-family: "Montserrat", sans-serif;
   background-image: url("../images/fondo.jpg");
   background-color: var(--light-bg);
   background-repeat: no-repeat;
   background-size: auto;
   background-blend-mode: multiply;
-  color: var(--primary-text);
-  margin: 0;
-  padding: 0;
   height: 100vh;
   overflow: hidden;
 }
