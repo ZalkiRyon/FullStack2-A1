@@ -13,11 +13,7 @@
 
 /* Configuración específica para páginas admin */
 .admin-body {
-  background-image: url("../images/fondo.jpg");
   background-color: var(--light-bg);
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-blend-mode: multiply;
   height: 100vh;
   overflow: hidden;
 }
@@ -33,7 +29,7 @@
 .admin-sidebar {
   width: 250px;
   background-color: var(--admin-sidebar-bg);
-  border-right: 1px solid var(--admin-sidebar-border);
+  border-right: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -45,7 +41,7 @@
   display: flex;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid var(--admin-sidebar-border);
+  border-bottom: 1px solid #e0e0e0;
   gap: 10px;
 }
 
@@ -107,7 +103,7 @@
 
 /* Footer del sidebar */
 .admin-sidebar-footer {
-  border-top: 1px solid var(--admin-sidebar-border);
+  border-top: 1px solid #e0e0e0;
   padding: 20px 0;
 }
 
@@ -126,7 +122,7 @@
   align-items: center;
   padding: 15px 20px;
   margin-top: 10px;
-  border-top: 1px solid var(--admin-sidebar-border);
+  border-top: 1px solid #e0e0e0;
   gap: 10px;
 }
 
@@ -182,11 +178,11 @@
   .admin-sidebar {
     width: 200px;
   }
-  
+
   .welcome-title {
     font-size: 2rem;
   }
-  
+
   .admin-content {
     padding: 20px;
   }
@@ -461,30 +457,30 @@
   .admin-content-ordenes {
     padding: 15px 20px;
   }
-  
+
   .orders-header {
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
   }
-  
+
   .section-title {
     font-size: 1.5rem;
   }
-  
+
   .orders-table-container {
     overflow-x: auto;
   }
-  
+
   .orders-table {
     min-width: 600px;
   }
-  
+
   .pagination-controls {
     flex-wrap: wrap;
     gap: 3px;
   }
-  
+
   .pagination-btn {
     padding: 6px 10px;
     font-size: 12px;
@@ -496,47 +492,47 @@
   .admin-container {
     flex-direction: column;
   }
-  
+
   .admin-sidebar {
     width: 100%;
     height: auto;
     max-height: 200px;
     overflow-y: auto;
   }
-  
+
   .admin-nav {
     padding: 10px 0;
   }
-  
+
   .nav-list {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     padding: 0 10px;
   }
-  
+
   .nav-item {
     margin-bottom: 0;
     flex: 1;
     min-width: 120px;
   }
-  
+
   .nav-link {
     padding: 8px 12px;
     font-size: 12px;
     justify-content: center;
     text-align: center;
   }
-  
+
   .nav-icon {
     margin-right: 5px;
     font-size: 14px;
   }
-  
+
   .admin-sidebar-footer {
     display: none;
   }
-  
+
   .welcome-title {
     font-size: 1.5rem;
   }
@@ -808,16 +804,16 @@
   .filters-section .row > div {
     margin-bottom: 10px;
   }
-  
+
   .table-responsive {
     border-radius: 0;
   }
-  
+
   .action-buttons {
     flex-direction: column;
     gap: 2px;
   }
-  
+
   .action-buttons .btn {
     width: 30px;
     height: 30px;

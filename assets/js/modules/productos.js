@@ -221,7 +221,7 @@ function renderProductos() {
           producto.nombre
         }" class="imgProductos" onerror="this.src='../../assets/images/icono.png'" />
             </div>
-            <h6>${producto.nombre}</h6>
+            <h4>${producto.nombre}</h4>
             <span>$${producto.precio.toLocaleString()}</span>
             <button class="btnAddProductos" id="${producto.id}">Añadir</button>
           </article>

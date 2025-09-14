@@ -8,14 +8,17 @@
   --brown: #8b4513;
   --primary-text: #333333;
   --secundary-text: #666666;
+
+  --fuente-principal: "Montserrat", sans-serif;
+  --fuente-encabezado: "Playfair Display", serif;
 }
 
 /* Reset y configuración base */
 /* Con esto puedo quitar las flechas del input type number */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Tipografías base */
@@ -27,9 +30,16 @@ body {
   line-height: 1.6;
 }
 
-h1 {
-  font-family: "Playfair Display", serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fuente-encabezado);
   color: var(--brown);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
 }
 
 /* Componentes base de formularios */
@@ -123,7 +133,7 @@ a:hover {
   .container-fluid {
     padding: 0 10px;
   }
-  
+
   .btn-primary {
     padding: 8px 16px;
     font-size: 14px;

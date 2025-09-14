@@ -15,6 +15,8 @@
     <!-- CSS específico del admin -->
     <link rel="stylesheet" href="../../assets/css/admin.css" />
 
+    <link rel="stylesheet" href="../../assets/css/inventario.css" />
+
     <!-- Fuente de Google Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,39 +46,36 @@
 
         <nav class="admin-nav">
           <ul class="nav-list">
-            <li class="nav-item active">
-              <a href="#" class="nav-link">
-                <i class="nav-icon">📊</i>
+            <li class="nav-item">
+              <a href="dashboard.html" class="nav-link">
                 <span>Dashboard</span>
               </a>
             </li>
             <!-- <li class="nav-item">
                         <a href="ordenes.html" class="nav-link">
-                            <i class="nav-icon">📦</i>
+                        
                             <span>Órdenes</span>
                         </a>
                     </li> -->
-            <li class="nav-item">
+            <li class="nav-item active">
               <a href="inventario.html" class="nav-link">
-                <i class="nav-icon">📋</i>
                 <span>Inventario</span>
               </a>
             </li>
             <!-- <li class="nav-item">
                         <a href="reportes.html" class="nav-link">
-                            <i class="nav-icon">📈</i>
+                           
                             <span>Reportes</span>
                         </a>
                     </li> -->
             <!-- <li class="nav-item">
                         <a href="empleados.html" class="nav-link">
-                            <i class="nav-icon">👥</i>
+                      
                             <span>Empleados</span>
                         </a>
                     </li> -->
             <li class="nav-item">
               <a href="listarUsuarios.html" class="nav-link">
-                <i class="nav-icon">👤</i>
                 <span>Usuarios</span>
               </a>
             </li>
@@ -87,25 +86,21 @@
         <div class="admin-sidebar-footer">
           <div class="nav-item">
             <a href="configuraciones.html" class="nav-link">
-              <i class="nav-icon">⚙️</i>
               <span>Configuraciones</span>
             </a>
           </div>
           <div class="nav-item">
             <a href="perfil.html" class="nav-link">
-              <i class="nav-icon">🔧</i>
               <span>Perfil</span>
             </a>
           </div>
           <div class="nav-item">
             <a href="buscar.html" class="nav-link">
-              <i class="nav-icon">🔍</i>
               <span>Buscar</span>
             </a>
           </div>
           <div class="nav-item">
             <a href="ayuda.html" class="nav-link">
-              <i class="nav-icon">🚪</i>
               <span>Ayuda</span>
             </a>
           </div>
@@ -129,17 +124,17 @@
       </aside>
 
       <!-- Main Content -->
-      <main class="admin-main">
+      <main class="admin-main" style="padding: 30px">
         <div class="admin-header">
           <div class="header-content">
-            <h1 class="page-title">📋 Gestión de Inventario</h1>
+            <h1 class="page-title">Gestión de Inventario</h1>
             <p class="page-subtitle">
               Administra el inventario de productos de Huerto Hogar
             </p>
           </div>
           <div class="header-actions">
             <button class="btn btn-primary" id="nuevoProductoBtn">
-              <span>➕</span> Nuevo Producto
+              NUEVO PRODUCTO
             </button>
           </div>
         </div>

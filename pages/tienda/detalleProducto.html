@@ -102,16 +102,14 @@
           <img src="" class="imgDetalleProducto" id="imgDetalleProducto" />
         </div>
         <article class="detalleProducto">
-          <header class="d-flex justify-content-between align-items-center">
-            <h3 id="nombreDetalleProducto"></h3>
+          <header class="d-flex flex-column">
+            <h2 id="nombreDetalleProducto"></h2>
             <h3 id="precioDetalleProducto"></h3>
           </header>
           <p id="descripcionDetalleProducto"></p>
-          <div
-            class="d-flex flex-row justify-content-between align-items-baseline"
-          >
-            <label for="cantidad">Cantidad</label>
-            <div>
+          <div class="d-flex flex-row align-items-baseline gap-2">
+            <label for="cantidad" class="cantidadDetalleLabel">Cantidad</label>
+            <div class="cantidadDetalleContainer">
               <button class="btn-restar-detalle">-</button>
               <input
                 type="number"
@@ -120,7 +118,7 @@
                 min="1"
                 max="100"
                 value="1"
-                class="w-50 cantidadProductoCarrito"
+                class="cantidadProductoCarrito"
                 onkeydown="return false"
                 onpaste="return false"
               />

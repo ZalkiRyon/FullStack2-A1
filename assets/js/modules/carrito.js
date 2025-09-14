@@ -130,9 +130,8 @@ function renderPagCarrito() {
   if (carrito.length === 0) {
     totalCarrito.innerHTML = `$0`;
     containerCarrito.innerHTML = `
-    <div >
-      <h3>No hay elementos en tu carrito...</h3>
-      <p>Agrega algunos productos para continuar</p>
+    <div class="mensajeErrorCarrito">
+      <h2>No hay elementos en tu carrito :( <br> Agrega algunos productos para continuar...</h2>
     </div>`;
   } else {
     totalCarrito.innerHTML = `$ ${total}`;
@@ -152,9 +151,9 @@ function renderPagCarrito() {
                 class="imgProductoCarrito"
               />
             </div>
-            <div>
+            <div class="infoProductoCarrito">
               <h4>${item.nombre}</h4>
-              <p>${item.descripcion.slice(0, 3)}</p>
+              <p>${item.descripcion.slice(0, 100)}...</p>
             </div>
             <div class="d-flex flex-column">
               <h4 class="precioItem">$ ${item.precio * item.cantidad}</h4>
@@ -167,7 +166,7 @@ function renderPagCarrito() {
                   min="1"
                   max="100"
                   value="${item.cantidad}"
-                  class="w-50 cantidadProductoCarrito"
+                  class="cantidadProductoCarritoResumen"
                   onkeydown="return false" onpaste="return false"
                 />
                  <button class="btn-sumar">+</button>
