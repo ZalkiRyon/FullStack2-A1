@@ -115,19 +115,24 @@ export function initializerListaProductos() {
     renderProductos();
   }
   if (ruta === "detalleProducto.html") {
+    const btn = document.querySelector(".btnAddProductoDetalle");
+    btn.setAttribute(
+      "data-producto-id",
+      JSON.parse(localStorage.getItem("productoSeleccionado")).id
+    );
     renderDetalleProducto();
   }
 }
-
-
 
 function renderProductosPagPrincipal() {
   // Renderizado pag principal
   const containerPagPrincipal = document.querySelector(".seccion-productos");
 
   // Obtener productos base y personalizados
-  const productosBase = JSON.parse(localStorage.getItem("ListaProductos")) || [];
-  const productosPersonalizados = JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  const productosBase =
+    JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados =
+    JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
   const productos = [...productosBase, ...productosPersonalizados];
 
   if (!containerPagPrincipal) {
@@ -140,19 +145,20 @@ function renderProductosPagPrincipal() {
   const primerosTresProductos = productos.slice(0, 3);
 
   containerPagPrincipal.innerHTML = primerosTresProductos
-    .map(
-      (producto) => {
-        // Determinar la fuente de la imagen
-        const imagenSrc = producto.imagenCustom 
-          ? producto.imagenCustom 
-          : producto.imagen 
-            ? `assets/images/${producto.imagen}` 
-            : 'assets/images/icono.png';
-            
-        return `
+    .map((producto) => {
+      // Determinar la fuente de la imagen
+      const imagenSrc = producto.imagenCustom
+        ? producto.imagenCustom
+        : producto.imagen
+        ? `assets/images/${producto.imagen}`
+        : "assets/images/icono.png";
+
+      return `
         <article class="cartaProducto">
           <div class="imgCartaProducto">
-            <img src="${imagenSrc}" alt="Producto ${producto.nombre}" onerror="this.src='assets/images/icono.png'" />
+            <img src="${imagenSrc}" alt="Producto ${
+        producto.nombre
+      }" onerror="this.src='assets/images/icono.png'" />
           </div>
           <a href="">${producto.nombre}</a>
           <div class="contenidoCartaProducto">
@@ -161,54 +167,92 @@ function renderProductosPagPrincipal() {
           </div>
         </article>
         `;
-      }
-    )
+    })
     .join("");
 }
 
 function renderProductos() {
-  // Renderizado Pag Producto
   const containerPagProducto = document.querySelector(
     ".sectionTodosLosProductos"
   );
 
   if (!containerPagProducto) {
     console.error(
-      `No se encontró el contenedor con clase: ${containerPagProducto}`
+      `No se encontró el contenedor con clase: .sectionTodosLosProductos`
     );
     return;
   }
 
-  // Obtener productos base y personalizados
-  const productosBase = JSON.parse(localStorage.getItem("ListaProductos")) || [];
-  const productosPersonalizados = JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
-  const productos = [...productosBase, ...productosPersonalizados];
+  // Obtener la lista completa de productos una sola vez
+  const productosBase =
+    JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados =
+    JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  const todosLosProductos = [...productosBase, ...productosPersonalizados];
 
-  containerPagProducto.innerHTML = productos
-    .map(
-      (producto) => {
-        // Determinar la fuente de la imagen
-        const imagenSrc = producto.imagenCustom 
-          ? producto.imagenCustom 
-          : producto.imagen 
-            ? `../../assets/images/${producto.imagen}` 
-            : '../../assets/images/icono.png';
-            
+  const select = document.getElementById("filtroCategoria");
+
+  // Rellenar las opciones del select
+  const categorias = [
+    "Todos",
+    ...new Set(todosLosProductos.map((p) => p.categoria)),
+  ];
+  categorias.forEach((cat) => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    select.appendChild(option);
+  });
+
+  // Función para renderizar los productos en el DOM
+  function renderizarProductosFiltrados(productosAFiltrar) {
+    containerPagProducto.innerHTML = productosAFiltrar
+      .map((producto) => {
+        const imagenSrc = producto.imagenCustom
+          ? producto.imagenCustom
+          : producto.imagen
+          ? `../../assets/images/${producto.imagen}`
+          : "../../assets/images/icono.png";
+
         return `
-        <article class="cardProductos" data-producto-id="${producto.id}">
-          <div class="containerImgProductos">
-            <img src="${imagenSrc}" alt="Imagen Producto ${producto.nombre}" class="imgProductos" onerror="this.src='../../assets/images/icono.png'" />
-          </div>
-          <h6>${producto.nombre}</h6>
-          <span>$${producto.precio.toLocaleString()}</span>
-          <button class="btnAddProductos" id="${producto.id}" >Añadir</button>
-        </article>
+          <article class="cardProductos" data-producto-id="${producto.id}">
+            <div class="containerImgProductos">
+              <img src="${imagenSrc}" alt="Imagen Producto ${
+          producto.nombre
+        }" class="imgProductos" onerror="this.src='../../assets/images/icono.png'" />
+            </div>
+            <h6>${producto.nombre}</h6>
+            <span>$${producto.precio.toLocaleString()}</span>
+            <button class="btnAddProductos" id="${producto.id}">Añadir</button>
+          </article>
         `;
-      }
-    )
-    .join("");
-  setupEvent();
+      })
+      .join("");
+
+    // Vuelve a adjuntar los eventos a los nuevos elementos del DOM.
+    setupEvent();
+  }
+
+  // Agregar el evento de 'change' al select
+  select.addEventListener("change", (e) => {
+    const categoria = e.target.value;
+    let productosFiltrados;
+
+    if (categoria === "Todos") {
+      productosFiltrados = todosLosProductos;
+    } else {
+      productosFiltrados = todosLosProductos.filter(
+        (p) => p.categoria === categoria
+      );
+    }
+
+    renderizarProductosFiltrados(productosFiltrados);
+  });
+
+  // Renderizar la lista completa de productos al cargar la página por primera vez
+  renderizarProductosFiltrados(todosLosProductos);
 }
+
 
 function setupEvent() {
   // Identificar donde estaremos ubicados
@@ -240,10 +284,12 @@ function handleClickDetalle(cardElement) {
 
 function redirectDetalleProducto(productoId) {
   // Obtener productos base y personalizados
-  const productosBase = JSON.parse(localStorage.getItem("ListaProductos")) || [];
-  const productosPersonalizados = JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
+  const productosBase =
+    JSON.parse(localStorage.getItem("ListaProductos")) || [];
+  const productosPersonalizados =
+    JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
   const productos = [...productosBase, ...productosPersonalizados];
-  
+
   const producto = productos.find((p) => p.id == productoId);
 
   if (producto) {
@@ -252,7 +298,9 @@ function redirectDetalleProducto(productoId) {
   }
 }
 
-function renderDetalleProducto() {
+export function renderDetalleProducto() {
+  const btn = document.querySelector(".btnAddProductoDetalle");
+
   const producto =
     JSON.parse(localStorage.getItem("productoSeleccionado")) || [];
   document.getElementById("nombreDetalleProducto").textContent =
@@ -264,7 +312,7 @@ function renderDetalleProducto() {
   ).textContent = `$${producto.precio.toLocaleString()}`;
   document.getElementById("descripcionDetalleProducto").textContent =
     producto.descripcion;
-    
+
   // Manejar imagen personalizada o predefinida
   const imagenElement = document.getElementById("imgDetalleProducto");
   if (producto.imagenCustom) {
@@ -275,6 +323,35 @@ function renderDetalleProducto() {
     imagenElement.src = "../../assets/images/icono.png";
   }
   imagenElement.alt = producto.nombre;
-  imagenElement.onerror = function() { this.src = "../../assets/images/icono.png"; };
-}
+  imagenElement.onerror = function () {
+    this.src = "../../assets/images/icono.png";
+  };
 
+  btn.addEventListener("click", () => {
+    handleClickAgregarCarrito(btn);
+    console.log("btn", btn);
+  });
+
+  const cantidadInput = document.getElementById("cantidad");
+  const btnRestar = document.querySelector(".btn-restar-detalle");
+  const btnSumar = document.querySelector(".btn-sumar-detalle");
+
+  if (btnRestar) {
+    btnRestar.addEventListener("click", () => {
+      let cantidad = parseInt(cantidadInput.value);
+      if (cantidad > 1) {
+        cantidadInput.value = cantidad - 1;
+      }
+    });
+  }
+
+  if (btnSumar) {
+    btnSumar.addEventListener("click", () => {
+      let cantidad = parseInt(cantidadInput.value);
+      if (cantidad < 100) {
+        // O el valor máximo que desees
+        cantidadInput.value = cantidad + 1;
+      }
+    });
+  }
+}

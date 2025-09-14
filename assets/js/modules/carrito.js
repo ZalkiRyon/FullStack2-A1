@@ -15,51 +15,65 @@ export function initializerCarrito() {
 }
 
 export function handleClickAgregarCarrito(buttonElement) {
-  const productoId = parseInt(buttonElement.getAttribute("id"));
-  agregarProductoAlCarrito(productoId);
+  let productoId = buttonElement.getAttribute("id");
+
+  if (!productoId) {
+    productoId = buttonElement.getAttribute("data-producto-id");
+  }
+
+  const idNumerico = parseInt(productoId);
+
+  if (isNaN(idNumerico)) {
+    console.error("El ID del producto no es un número válido.");
+    return;
+  }
+
+  // Obtiene el valor del input de cantidad en la página de detalle.
+  const cantidadInput = document.getElementById("cantidad");
+  let cantidad = 1; // Valor por defecto si el input no se encuentra o no es válido.
+
+  if (cantidadInput) {
+    const valorCantidad = parseInt(cantidadInput.value);
+    if (!isNaN(valorCantidad) && valorCantidad > 0) {
+      cantidad = valorCantidad;
+    }
+  }
+
+  // Llama a la función principal para agregar al carrito con la cantidad especificada.
+  agregarProductoAlCarrito(idNumerico, cantidad);
 }
 
 function agregarProductoAlCarrito(productoId, cantidad = 1) {
   const carrito = JSON.parse(localStorage.getItem("Carrito")) || [];
   const listaProductos =
     JSON.parse(localStorage.getItem("ListaProductos")) || [];
-  const productosPersonalizados = 
+  const productosPersonalizados =
     JSON.parse(localStorage.getItem("ProductosPersonalizados")) || [];
-  
-  // El productoId llega como String y los id son Number asi que se castea
+
   const productoExistenteCarrito = carrito.find(
     (item) => item.id === productoId
   );
 
-  // Si existe solo se le suma la cantidad
   if (productoExistenteCarrito) {
     productoExistenteCarrito.cantidad += cantidad;
     alert("Cantidad actualizada");
   } else {
-    // Buscar el producto en ambas listas
-    let producto = listaProductos.find(
-      (produc) => produc.id === productoId
-    );
-    
-    // Si no se encuentra en productos base, buscar en productos personalizados
+    let producto = listaProductos.find((produc) => produc.id === productoId);
     if (!producto) {
       producto = productosPersonalizados.find(
         (produc) => produc.id === productoId
       );
     }
-
-    // Verificar que el producto existe
     if (!producto) {
       alert("Producto no encontrado");
       return;
     }
 
-    // Nuestro item que se ira directo al carrito
     const productoAgregar = {
       id: producto.id,
       nombre: producto.nombre,
       precio: producto.precio,
-      imagen: producto.imagenCustom || producto.imagen, // Usar imagen personalizada si existe
+      imagen: producto.imagenCustom || producto.imagen,
       categoria: producto.categoria,
       descripcion: producto.descripcion,
       stock: producto.stock,
@@ -67,7 +81,7 @@ function agregarProductoAlCarrito(productoId, cantidad = 1) {
     };
 
     carrito.push(productoAgregar);
-    alert("Producto agregado con exito al carrito");
+    alert("Producto agregado con éxito al carrito");
   }
 
   localStorage.setItem("Carrito", JSON.stringify(carrito));
@@ -123,14 +137,13 @@ function renderPagCarrito() {
   } else {
     totalCarrito.innerHTML = `$ ${total}`;
     containerCarrito.innerHTML = carrito
-      .map(
-        (item) => {
-          // Determinar la ruta de la imagen
-          const imagenSrc = item.imagen.startsWith('data:') 
-            ? item.imagen 
-            : `../../assets/images/${item.imagen}`;
-          
-          return `
+      .map((item) => {
+        // Determinar la ruta de la imagen
+        const imagenSrc = item.imagen.startsWith("data:")
+          ? item.imagen
+          : `../../assets/images/${item.imagen}`;
+
+        return `
         <article class="productoCarrito" data-carrito-id="${item.id}">
             <div class="containerImgProductoCarrito">
               <img
@@ -161,35 +174,29 @@ function renderPagCarrito() {
               </div>
             </div>
           </article>`;
-        }
-      )
+      })
       .join("");
   }
 }
 
-
 function setupCartEventListeners() {
-  // Similar a en productos donde habia que distinguir 
+  // Similar a en productos donde habia que distinguir
   // cuando se apretara para agregar al carro o
   // ir al detalle en particular
-  // hay que hacerlo con los botones de sumar y restar 
+  // hay que hacerlo con los botones de sumar y restar
   const containerCarrito = document.getElementById("cart-list");
 
   if (containerCarrito) {
     containerCarrito.addEventListener("click", function (event) {
-  
       if (
         event.target.matches(".btn-sumar") ||
         event.target.matches(".btn-restar")
       ) {
-       
         const article = event.target.closest(".productoCarrito");
         if (!article) return;
 
-        
         const id = parseInt(article.getAttribute("data-carrito-id"));
 
-        
         if (event.target.matches(".btn-sumar")) {
           aumentarCantidad(id);
         } else if (event.target.matches(".btn-restar")) {
@@ -202,7 +209,7 @@ function setupCartEventListeners() {
   // Agregar evento para el botón de vaciar carrito
   const vaciarCarritoBtn = document.getElementById("vaciarCarritoBtn");
   if (vaciarCarritoBtn) {
-    vaciarCarritoBtn.addEventListener("click", function() {
+    vaciarCarritoBtn.addEventListener("click", function () {
       vaciarCarrito();
     });
   }
@@ -266,17 +273,19 @@ function aumentarCantidad(id) {
 // Función para vaciar completamente el carrito
 function vaciarCarrito() {
   // Confirmar antes de vaciar el carrito
-  const confirmacion = confirm("¿Estás seguro de que quieres vaciar todo el carrito?");
-  
+  const confirmacion = confirm(
+    "¿Estás seguro de que quieres vaciar todo el carrito?"
+  );
+
   if (confirmacion) {
     // Limpiar el carrito en localStorage
     localStorage.setItem("Carrito", JSON.stringify([]));
     localStorage.setItem("TotalItemsCarrito", "0");
-    
+
     // Actualizar la interfaz
     renderPagCarrito();
     renderNavCarrito();
-    
+
     // Mostrar mensaje de confirmación
     alert("El carrito ha sido vaciado exitosamente.");
   }

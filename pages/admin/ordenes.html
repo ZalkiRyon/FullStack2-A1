@@ -1,188 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Órdenes - Huerto Hogar Admin</title>
-    
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- CSS Base -->
-    <link rel="stylesheet" href="../../assets/css/base.css">
+    <link rel="stylesheet" href="../../assets/css/base.css" />
     <!-- CSS específico del admin -->
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link rel="stylesheet" href="../../assets/css/admin.css" />
     <!-- CSS específico de órdenes -->
-    <link rel="stylesheet" href="../../assets/css/ordenes.css">
-    
+    <link rel="stylesheet" href="../../assets/css/ordenes.css" />
+
     <!-- Fuente de Google Montserrat -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Fuente de Google Playfair Display -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-</head>
-<body class="admin-body">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="admin-body">
     <div class="admin-container">
-        <!-- Sidebar -->
-        <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <img src="../../assets/images/icono.png" alt="Logo Huerto Hogar" class="logo-img">
-                <span class="logo-text">Huerto Hogar</span>
-            </div>
-            
-            <nav class="admin-nav">
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link">
-                            <i class="nav-icon">📊</i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar">
+        <div class="admin-logo">
+          <img
+            src="../../assets/images/icono.png"
+            alt="Logo Huerto Hogar"
+            class="logo-img"
+          />
+          <span class="logo-text">Huerto Hogar</span>
+        </div>
+
+        <nav class="admin-nav">
+          <ul class="nav-list">
+            <li class="nav-item active">
+              <a href="#" class="nav-link">
+                <i class="nav-icon">📊</i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <!-- <li class="nav-item">
                         <a href="ordenes.html" class="nav-link">
                             <i class="nav-icon">📦</i>
                             <span>Órdenes</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="inventario.html" class="nav-link">
-                            <i class="nav-icon">📋</i>
-                            <span>Inventario</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                    </li> -->
+            <li class="nav-item">
+              <a href="inventario.html" class="nav-link">
+                <i class="nav-icon">📋</i>
+                <span>Inventario</span>
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+                        <a href="reportes.html" class="nav-link">
                             <i class="nav-icon">📈</i>
                             <span>Reportes</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                    </li> -->
+            <!-- <li class="nav-item">
+                        <a href="empleados.html" class="nav-link">
                             <i class="nav-icon">👥</i>
                             <span>Empleados</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="listarUsuarios.html" class="nav-link">
-                            <i class="nav-icon">👤</i>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <!-- Sidebar Footer -->
-            <div class="admin-sidebar-footer">
-                <div class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon">⚙️</i>
-                        <span>Configuraciones</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon">🔧</i>
-                        <span>Perfil</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon">🔍</i>
-                        <span>Buscar</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="login.html" class="nav-link">
-                        <i class="nav-icon">🚪</i>
-                        <span>Ayuda</span>
-                    </a>
-                </div>
-                
-                <!-- User Profile -->
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        <i class="user-icon">👤</i>
-                    </div>
-                    <span class="user-name" id="adminUserInfo">Administrador</span>
-                    <button class="btn btn-sm btn-outline-danger mt-2" id="logoutButton">
-                        Cerrar Sesión
-                    </button>
-                </div>
+                    </li> -->
+            <li class="nav-item">
+              <a href="listarUsuarios.html" class="nav-link">
+                <i class="nav-icon">👤</i>
+                <span>Usuarios</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="admin-sidebar-footer">
+          <div class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon">⚙️</i>
+              <span>Configuraciones</span>
+            </a>
+          </div>
+          <div class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon">🔧</i>
+              <span>Perfil</span>
+            </a>
+          </div>
+          <div class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon">🔍</i>
+              <span>Buscar</span>
+            </a>
+          </div>
+          <div class="nav-item">
+            <a href="login.html" class="nav-link">
+              <i class="nav-icon">🚪</i>
+              <span>Ayuda</span>
+            </a>
+          </div>
+
+          <!-- User Profile -->
+          <div class="user-profile">
+            <div class="user-avatar">
+              <i class="user-icon">👤</i>
             </div>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="admin-main">
-            <div class="orders-container">
-                <!-- Header Section -->
-                <div class="orders-header">
-                    <div class="header-left">
-                        <div class="title-and-button">
-                            <h1 class="page-title">Usuarios</h1>
-                            <button class="btn-nuevo-usuario" onclick="window.location.href='nuevoUsuario.html'">NUEVO USUARIO</button>
-                        </div>
-                    </div>
-                    <div class="header-right">                        
-                        <div class="notification-bell">🔔</div>
-                    </div>
-                </div>
+            <span class="user-name" id="adminUserInfo">Administrador</span>
+            <button
+              class="btn btn-sm btn-outline-danger mt-2"
+              id="logoutButton"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </aside>
 
-                <!-- Filter Section -->
-                <div class="filter-section">
-                    <select id="status-filter" class="status-dropdown">
-                        <option value="all">Todas las ordenes de venta ▼</option>
-                        <option value="Enviado">Enviado</option>
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Cancelado">Cancelado</option>
-                        <option value="Procesando">Procesando</option>
-                    </select>
-                </div>
-
-                <!-- Orders Table -->
-                <div class="table-container">
-                    <table class="orders-table">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Número de Orden</th>
-                                <th>Cliente</th>
-                                <th>Estado</th>
-                                <th>Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orders-tbody">
-                            <!-- Datos cargados dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div class="pagination-section">
-                    <button class="page-btn" data-page="primera">«</button>
-                    <button class="page-btn" data-page="anterior">‹</button>
-                    <button class="page-btn page-number" data-page="1">1</button>
-                    <button class="page-btn page-number" data-page="2">2</button>
-                    <button class="page-btn page-number" data-page="3">3</button>
-                    <button class="page-btn page-number" data-page="4">4</button>
-                    <button class="page-btn page-number" data-page="5">5</button>
-                    <button class="page-btn page-number" data-page="6">6</button>
-                    <button class="page-btn page-number" data-page="7">7</button>
-                    <button class="page-btn page-number" data-page="8">8</button>
-                    <button class="page-btn page-number" data-page="9">9</button>
-                    <button class="page-btn page-number" data-page="10">10</button>
-                    <button class="page-btn" data-page="siguiente">›</button>
-                    <button class="page-btn" data-page="ultima">»</button>
-                </div>
+      <!-- Main Content -->
+      <main class="admin-main">
+        <div class="orders-container">
+          <!-- Header Section -->
+          <div class="orders-header">
+            <div class="header-left">
+              <div class="title-and-button">
+                <h1 class="page-title">Usuarios</h1>
+                <button
+                  class="btn-nuevo-usuario"
+                  onclick="window.location.href='nuevoUsuario.html'"
+                >
+                  NUEVO USUARIO
+                </button>
+              </div>
             </div>
-        </main>
+            <div class="header-right">
+              <div class="notification-bell">🔔</div>
+            </div>
+          </div>
+
+          <!-- Filter Section -->
+          <div class="filter-section">
+            <select id="status-filter" class="status-dropdown">
+              <option value="all">Todas las ordenes de venta ▼</option>
+              <option value="Enviado">Enviado</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Cancelado">Cancelado</option>
+              <option value="Procesando">Procesando</option>
+            </select>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="table-container">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Número de Orden</th>
+                  <th>Cliente</th>
+                  <th>Estado</th>
+                  <th>Monto</th>
+                </tr>
+              </thead>
+              <tbody id="orders-tbody">
+                <!-- Datos cargados dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination-section">
+            <button class="page-btn" data-page="primera">«</button>
+            <button class="page-btn" data-page="anterior">‹</button>
+            <button class="page-btn page-number" data-page="1">1</button>
+            <button class="page-btn page-number" data-page="2">2</button>
+            <button class="page-btn page-number" data-page="3">3</button>
+            <button class="page-btn page-number" data-page="4">4</button>
+            <button class="page-btn page-number" data-page="5">5</button>
+            <button class="page-btn page-number" data-page="6">6</button>
+            <button class="page-btn page-number" data-page="7">7</button>
+            <button class="page-btn page-number" data-page="8">8</button>
+            <button class="page-btn page-number" data-page="9">9</button>
+            <button class="page-btn page-number" data-page="10">10</button>
+            <button class="page-btn" data-page="siguiente">›</button>
+            <button class="page-btn" data-page="ultima">»</button>
+          </div>
+        </div>
+      </main>
     </div>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JS personalizado de admin -->
     <script src="../../assets/js/admin.js"></script>
     <!-- JS específico de órdenes -->
     <script type="module" src="../../assets/js/ordenes-admin.js"></script>
-</body>
+  </body>
 </html>
